@@ -35,23 +35,36 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
 });
 
 let server;
-function runServer(port = 3001) {
+function runServer(port = 3001, databaseUrl=DATABASE_URL) {
+  console.log(databaseUrl);
   return new Promise((resolve, reject) => {
-    server = app.listen(port, () => {
-      resolve();
-    }).on('error', reject);
+    mongoose.connect(databaseUrl, err => {
+      if (err) {
+        return reject(err);
+      }
+      server = app.listen(port, () => {
+        console.log(`Your app is listening on port ${port}`);
+        resolve();
+      })
+      .on('error', err => {
+        mongoose.disconnect();
+        reject(err);
+      });
+    });  
   });
 }
 
 function closeServer() {
-  return new Promise((resolve, reject) => {
-    server.close(err => {
-      if (err) {
-        return reject(err);
-      }
-      resolve();
+  return mongoose.disconnect().then(() => {
+    return new Promise((resolve, reject) => {
+      server.close(err => {
+        if (err) {
+          return reject(err);
+        }
+        resolve();
+      });
     });
-  });
+  })
 }
 
 if (require.main === module) {
