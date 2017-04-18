@@ -5,8 +5,8 @@ export function GiftList(props) {
   let gifts;
   console.log(props);
   if(typeof props.gifts !== 'undefined') {
-    gifts = props.gifts.map((gift, index) => 
-      <li key={index} className="items" > hi </li>
+    gifts = props.gifts.map((user, index) => 
+      <li key={index} className="items" > {user} </li>
       // {giftlist} 
     )
   }

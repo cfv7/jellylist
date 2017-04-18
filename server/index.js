@@ -1,22 +1,25 @@
 const path = require('path');
 const express = require('express');
-
-const app = express();
+const mongoose = require('mongoose');
 
 require('dotenv').config();
 
-const {DATABASE_URL} = require('./config');
+mongoose.Promise = global.Promise;
+
+const {PORT, DATABASE_URL} = require('./config');
 
 const {User} = require('./models');
+
+const app = express();
 
 // API endpoints go here!
 app.get('/api/userdata', (req, res) => {
   User 
     .find()
     .exec()
-    .then(users => {
-      res.json(users.map(user => user.apiRepr()))
-      //return res.status(200).json(cheeses);
+    .then(userdata => {
+      console.log('->', userdata);
+      res.json(userdata.map(user => user.apiRepr()))
     })
     .catch(err => {
       console.error(err);
@@ -35,7 +38,7 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
 });
 
 let server;
-function runServer(port = 3001, databaseUrl=DATABASE_URL) {
+function runServer(port = PORT, databaseUrl=DATABASE_URL) {
   console.log(databaseUrl);
   return new Promise((resolve, reject) => {
     mongoose.connect(databaseUrl, err => {
