@@ -12,10 +12,12 @@ const userDataSchema = mongoose.Schema({
 });
 // this
 userDataSchema.methods.apiRepr = function() {
-  console.log(this);
+  // console.log(this);
   return {
     id: this._id,
     user: this.user,
+    email: this.email,
+    birthday: this.birthday,
     giftlist: this.giftlist
   };
 }

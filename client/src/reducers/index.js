@@ -14,6 +14,8 @@ export const usersReducer = (state=initialState, action) => {
   else if (action.type === actions.FETCH_USER_SUCCESS) {
     return Object.assign({}, state, {
       user: state.user,
+      email: state.email,
+      birthday: state.birthday,
       giftlist: [action.giftlist],
       loading: action.loading,
       error: action.error
