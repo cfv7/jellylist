@@ -13,12 +13,19 @@ class App extends Component {
     return (
       <div className="App">
         <div className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h2>Jellylist</h2>
+          <img src={logo} className="App-logo App-floating" alt="logo" />
+          <h1 className="header-title">Jellylist</h1>
         </div>
-        <p className="App-intro">
+        <h2 className="user-title">
           User 1
-        </p>
+        </h2>
+        <div className='container'>
+          <ul>
+            <li className="items">Amazon Echo</li>
+            <li className="items">Sony PS4 VR </li>
+            <li className="items">Best Buy Gift Card</li>
+          </ul>
+        </div>  
         <UserList />
       </div>
     );
