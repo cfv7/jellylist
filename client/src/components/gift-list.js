@@ -3,10 +3,10 @@ import {connect} from 'react-redux'
 
 export function GiftList(props) {
   let gifts;
-  console.log(props);
+  console.log(props.gifts);
   if(typeof props.gifts !== 'undefined') {
     gifts = props.gifts.map((user, index) => 
-      <li key={index} className="items" > {user} </li>
+      <li key={index} className="items" > {gifts.name} </li>
       // {giftlist} 
     )
   }
@@ -20,7 +20,7 @@ export function GiftList(props) {
 }
 
 const mapStateToProps = state => ({
-  gifts: state.giftlist
+  gifts: state.gifts
 })
 
 export default connect(mapStateToProps)(GiftList)

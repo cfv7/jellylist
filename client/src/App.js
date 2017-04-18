@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import GiftList from './components/gift-list'
-import {getUsers} from './actions'
+import {getUser} from './actions'
 import {connect} from 'react-redux'
 
 class App extends Component {
   componentDidMount(){
-    this.props.dispatch(getUsers())
+    this.props.dispatch(getUser())
   }
   render() {
     return (

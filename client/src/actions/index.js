@@ -19,9 +19,9 @@ export const fetchUserError = (err) => ({
   error: err
 })
 
-export const getUsers = () => dispatch => {
+export const getUser = () => dispatch => {
   dispatch(fetchUserRequest())
-  return fetch('/api/userdata').then(user => {
+  return fetch('/api/users/58f6372ff36d287eae04271b').then(user => {
     return user.json()
   })
   .then(data => {

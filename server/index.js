@@ -13,19 +13,32 @@ const {User} = require('./models');
 const app = express();
 
 // API endpoints go here!
-app.get('/api/userdata', (req, res) => {
+app.get('/api/users', (req, res) => {
   User 
     .find()
     .exec()
-    .then(userdata => {
-      console.log('->', userdata);
-      res.json(userdata.map(user => user.apiRepr()))
+    .then(users => {
+      console.log('->', users);
+      res.json(users.map(user => user.apiRepr()))
     })
     .catch(err => {
       console.error(err);
       return res.status(500).json({error: 'Internal server error'});
     });
 })
+app.get('/api/users/:id', (req, res) => {
+  User 
+    .findById(req.params.id)
+    .exec()
+    .then(user => {
+      res.json(user.apiRepr())
+    })
+    .catch(err => {
+      console.error(err);
+      return res.status(500).json({error: 'Internal server error'});
+    });
+})
+
 
 // Serve the built client
 app.use(express.static(path.resolve(__dirname, '../client/build')));
