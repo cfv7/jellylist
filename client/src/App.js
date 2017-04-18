@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
-import UserList from './components/user-list'
+import GiftList from './components/gift-list'
 import {getUsers} from './actions'
 import {connect} from 'react-redux'
 
@@ -26,7 +26,7 @@ class App extends Component {
             <li className="items">Best Buy Gift Card</li>
           </ul>
         </div>  
-        <UserList />
+        <GiftList />
       </div>
     );
   }
