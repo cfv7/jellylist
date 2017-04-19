@@ -6,18 +6,17 @@ export class AddGift extends React.Component {
   constructor(props) {
     super(props)
   }
+  onAdd(event){
+    event.preventDefault()
+    const userId = this.props.userId
+    console.log('userId ->', userId)
+    const value = this.inputRef.value
+    this.props.dispatch(addGift(userId, value))
+  }
   render(){ 
-    let inputRef
-    function onAdd(event){
-      event.preventDefault()
-      const userId = this.props.match.params.userId
-      console.log('userId ->', userId)
-      const value = inputRef.value
-      this.props.dispatch(addGift(userId, value))
-    }
     return (
-        <form onSubmit={e => onAdd(e)}>
-          <input ref={input => inputRef = input} placeholder="add a gift" type="text" name="addGift" id="addGift" /> 
+        <form onSubmit={e => this.onAdd(e)}>
+          <input ref={input => this.inputRef = input} placeholder="add a gift" type="text" name="addGift" id="addGift" /> 
           <input type="submit" id="addGiftBtn" className="button" name="submit" value="➕" />
         </form>
     )

@@ -23,5 +23,19 @@ export const usersReducer = (state=initialState, action) => {
       error: action.error
     })
   }
+  else if (action.type === actions.PUT_USER_REQUEST) {
+    return Object.assign({}, state, {
+      loading: action.loading,
+      error: action.error
+    })
+  }
+  else if (action.type === actions.PUT_USER_SUCCESS) {
+    console.log('PUT_USER_SUCCESS');
+    let updatedUser = Object.assign({}, state.user, {giftlist: [...state.user.giftlist, action.newGift]  } )
+    console.log(updatedUser);
+    return Object.assign({}, state, {
+      user: updatedUser
+    })
+  }
   return state
 }

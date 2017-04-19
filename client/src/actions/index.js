@@ -26,16 +26,16 @@ export const putUserRequest = () => ({
 })
 
 export const PUT_USER_SUCCESS = 'PUT_USER_SUCCESS'
-export const putUserSuccess = (user) => ({
-  type: FETCH_USER_SUCCESS,
+export const putUserSuccess = (newGift) => ({
+  type: PUT_USER_SUCCESS,
   loading: false,
   error: null,
-  user
+  newGift
 })
 
 export const PUT_USER_ERROR = 'PUT_USER_ERROR'
 export const putUserError = (err) => ({
-  type: FETCH_USER_ERROR,
+  type: PUT_USER_ERROR,
   loading: false,
   error: err
 })
@@ -49,23 +49,31 @@ export const getUser = (userId) => dispatch => {
     dispatch(fetchUserSuccess(data))
   })
   .catch(err => {
-    console.error(err);
+    console.error('FETCH_USER_ERROR', err);
     dispatch(fetchUserError(err))
   })
 }
 
-export const addGift = (userId, newGift) => dispatch => {
+export const addGift = (userId, newGift) => (dispatch, getState) => {
   dispatch(putUserRequest())
+  const state = getState()
+  const giftObject= {name: newGift};
   return fetch(`/api/users/${userId}`, {
     method: 'put',
-    body: JSON.stringify(newGift),
+    body: JSON.stringify({id: userId, giftlist: [...state.user.giftlist, giftObject]
+    }),
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
   })
+  .then(() => {
+    dispatch(putUserSuccess(giftObject))
+  })
   .catch(err => {
     console.error(err);
-    dispatch(fetchUserError(err))  
+    dispatch(putUserError(err))  
   })
 }
+
+// { id: ${userId}`, `${giftlist.newGift}
