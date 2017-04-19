@@ -54,18 +54,23 @@ export const getUser = (userId) => dispatch => {
   })
 }
 
-export const addGift = (userId, newGift) => dispatch => {
+export const addGift = (userId, newGift) => (dispatch, getState) => {
   dispatch(putUserRequest())
+  const state = getState()
   return fetch(`/api/users/${userId}`, {
     method: 'put',
-    body: JSON.stringify(newGift),
+    body: JSON.stringify({id: userId, giftlist: [...state.user.giftlist, {name: newGift}]
+    }),
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
   })
+  .then(putUserSuccess(console.log('submitted!')))
   .catch(err => {
     console.error(err);
     dispatch(fetchUserError(err))  
   })
 }
+
+// { id: ${userId}`, `${giftlist.newGift}

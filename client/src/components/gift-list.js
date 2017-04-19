@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { getUser } from '../actions';
-import { AddGift } from './add-gift'
+import AddGift from './add-gift'
 
 
 export class GiftList extends React.Component {
@@ -27,13 +27,12 @@ export class GiftList extends React.Component {
         <ul>
           {currentGifts}
         </ul>
-        <AddGift />
+        <AddGift userId={this.props.match.params.userId}/>
       </div>
     );
   }
 }
 
-// userId={userId}
 // const mapStateToProps = state => ({gifts: state.giftlist});
 const mapStateToProps = function(state, prop){
   return {user: state.user};
