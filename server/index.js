@@ -1,16 +1,20 @@
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
-
+const passport = require('passport')
+const {BasicStrategy} = require('passport-http')
+const bcrypt = require('bcryptjs');
+const bodyParser = require('body-parser')
 require('dotenv').config();
-
-mongoose.Promise = global.Promise;
 
 const {PORT, DATABASE_URL} = require('./config');
 
 const {User} = require('./models');
 
 const app = express();
+app.use(bodyParser.json());
+
+mongoose.Promise = global.Promise;
 
 // API endpoints go here!
 app.get('/api/users', (req, res) => {
@@ -26,6 +30,7 @@ app.get('/api/users', (req, res) => {
       return res.status(500).json({error: 'Internal server error'});
     });
 })
+
 app.get('/api/users/:id', (req, res) => {
   User 
     .findById(req.params.id)
@@ -40,6 +45,54 @@ app.get('/api/users/:id', (req, res) => {
       console.error(err);
       return res.status(500).json({error: 'Internal server error'});
     });
+})
+
+app.post('/api/users', (req, res) => {
+  console.log(req.body)
+  User
+    .create({
+      user: req.body.user,
+      email: req.body.email,
+      password: req.body.password,
+      birthday: req.body.birthday,
+      giftlist: req.body.giftlist
+    })
+    .then(user => {
+       console.log(user)
+       res.status(201).json(user.apiRepr());
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({message: 'Internal server error'})
+    })
+})
+
+app.delete('/api/users/:id', (req, res) => {
+  User
+    .findByIdAndRemove(req.params.id)
+    .exec()
+    .then(()=> {
+      res.status(204).json({message: 'success'})
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({error: 'internal server error'})
+    })
+})
+
+app.put('/api/users/:id', (req, res) => {
+  const updated = {};
+  const updateableFields = ['user', 'email', 'giftlist', 'birthday'];
+  updateableFields.forEach(field => {
+    if (field in req.body) {
+      updated[field] = req.body[field]
+    }
+  })
+  User
+    .findByIdAndUpdate(req.params.id, {$set: updated}, {new: true})
+    .exec()
+    .then(updatedUser => res.status(201).json(updatedUser.apiRepr()))
+    .catch(err => res.status(500).json({message: 'internal server error'}))
 })
 
 
