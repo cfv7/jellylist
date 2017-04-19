@@ -19,6 +19,27 @@ export const fetchUserError = (err) => ({
   error: err
 })
 
+export const PUT_USER_REQUEST = 'PUT_USER_REQUEST'
+export const putUserRequest = () => ({
+  type: PUT_USER_REQUEST,
+  loading: true
+})
+
+export const PUT_USER_SUCCESS = 'PUT_USER_SUCCESS'
+export const putUserSuccess = (user) => ({
+  type: FETCH_USER_SUCCESS,
+  loading: false,
+  error: null,
+  user
+})
+
+export const PUT_USER_ERROR = 'PUT_USER_ERROR'
+export const putUserError = (err) => ({
+  type: FETCH_USER_ERROR,
+  loading: false,
+  error: err
+})
+
 export const getUser = (userId) => dispatch => {
   dispatch(fetchUserRequest())
   return fetch(`/api/users/${userId}`).then(user => {
@@ -30,5 +51,21 @@ export const getUser = (userId) => dispatch => {
   .catch(err => {
     console.error(err);
     dispatch(fetchUserError(err))
+  })
+}
+
+export const addGift = (userId, newGift) => dispatch => {
+  dispatch(putUserRequest())
+  return fetch(`/api/users/${userId}`, {
+    method: 'put',
+    body: JSON.stringify(newGift),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    dispatch(fetchUserError(err))  
   })
 }
