@@ -2,13 +2,9 @@ const mongoose = require('mongoose');
 
 const userDataSchema = mongoose.Schema({
   user: String,
-  giftlist: [{
-    name: String,
-    price_range: String,
-    link: String,
-    note: String,
-    purchased: Boolean
-  }]
+  email: String,
+  birthday: String,
+  giftlist: Array
 });
 // this
 userDataSchema.methods.apiRepr = function() {
