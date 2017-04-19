@@ -1,26 +1,37 @@
-import React from 'react'
-import {connect} from 'react-redux'
+import React from 'react';
+import {connect} from 'react-redux';
+import { getUser } from '../actions/index';
 
-export function GiftList(props) {
-  let gifts;
-  console.log(props.gifts);
-  if(typeof props.gifts !== 'undefined') {
-    gifts = props.gifts.map((user, index) => 
-      <li key={index} className="items" > {gifts.name} </li>
-      // {giftlist} 
-    )
+export class GiftList extends React.Component {
+  constructor(props) {
+    super(props);
   }
-  return (
-    <div className='container'>
-      <ul>
-        {gifts}
-      </ul>
-    </div>  
-  );
+  componentDidMount(){
+    console.log('this.props - >', this.props)
+    const userId = this.props.match.params.userId;
+    this.props.dispatch(getUser(userId));
+  }
+  render() {
+    let currentGifts;
+    if(this.props.user.giftlist) {
+      currentGifts = this.props.user.giftlist.map((gift, index) => 
+        <li key={index} className="items" > {gift.name} </li>
+        // {giftlist} 
+      )
+    }
+    return (
+      <div className='container'>
+        <ul>
+          {currentGifts}
+        </ul>
+      </div>
+    );
+  }
 }
 
-const mapStateToProps = state => ({
-  gifts: state.gifts
-})
+// const mapStateToProps = state => ({gifts: state.giftlist});
+const mapStateToProps = function(state, prop){
+  return {user: state.user};
+}
 
 export default connect(mapStateToProps)(GiftList)

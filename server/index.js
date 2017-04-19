@@ -31,6 +31,9 @@ app.get('/api/users/:id', (req, res) => {
     .findById(req.params.id)
     .exec()
     .then(user => {
+      if (!user) {
+        return res.status(400).send();
+      }
       res.json(user.apiRepr())
     })
     .catch(err => {

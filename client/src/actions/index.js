@@ -14,21 +14,21 @@ export const fetchUserSuccess = (user) => ({
 
 export const FETCH_USER_ERROR = 'FETCH_USER_ERROR'
 export const fetchUserError = (err) => ({
-  type: FETCH_USER_SUCCESS,
+  type: FETCH_USER_ERROR,
   loading: false,
   error: err
 })
 
-export const getUser = () => dispatch => {
+export const getUser = (userId) => dispatch => {
   dispatch(fetchUserRequest())
-  return fetch('/api/users/58f6372ff36d287eae04271b').then(user => {
+  return fetch(`/api/users/${userId}`).then(user => {
     return user.json()
   })
   .then(data => {
-    dispatch(fetchUserSuccess())
+    dispatch(fetchUserSuccess(data))
   })
   .catch(err => {
     console.error(err);
-    dispatch(fetchUserError())
+    dispatch(fetchUserError(err))
   })
 }

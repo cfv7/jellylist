@@ -4,30 +4,20 @@ import './App.css';
 import GiftList from './components/gift-list'
 import {getUser} from './actions'
 import {connect} from 'react-redux'
+import {BrowserRouter as Router, Route, Link, Redirect} from 'react-router-dom'
 
 class App extends Component {
-  componentDidMount(){
-    this.props.dispatch(getUser())
-  }
   render() {
     return (
+      <Router>
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo App-floating" alt="logo" />
           <h1 className="header-title">Jellylist</h1>
         </div>
-        <h2 className="user-title">
-          User 1
-        </h2>
-        <div className='container'>
-          <ul>
-            <li className="items">Amazon Echo</li>
-            <li className="items">Sony PS4 VR </li>
-            <li className="items">Best Buy Gift Card</li>
-          </ul>
-        </div>  
-        <GiftList />
+        <Route exact path="/:userId" component={GiftList} />
       </div>
+      </Router>
     );
   }
 }
