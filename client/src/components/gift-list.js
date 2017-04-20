@@ -18,7 +18,7 @@ export class GiftList extends React.Component {
     let currentGifts;
     if(this.props.user.giftlist) {
       currentGifts = this.props.user.giftlist.map((gift, index) => 
-        <li key={index} className="items" > {gift.name} </li>
+        <li key={index} className="items" > {gift.name} <span className="editBtn"> Edit </span></li>
         // {giftlist}
       )
     }
