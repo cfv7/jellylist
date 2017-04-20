@@ -69,7 +69,7 @@ function fetchApi(path, method, body) {
 
 export const addGift = (userId, newGift) => (dispatch, getState) => {
   dispatch(putUserRequest())
-  return fetchApi(`users/${userId}/add`, 'put', {name: newGift})
+  return fetchApi(`users/${userId}/add`, 'PATCH', {name: newGift})
   .then(() => {
     dispatch(putUserSuccess({name: newGift}))
   })
