@@ -69,9 +69,10 @@ function fetchApi(path, method, body) {
 
 export const addGift = (userId, newGift) => (dispatch, getState) => {
   dispatch(putUserRequest())
-  return fetchApi(`users/${userId}/add`, 'PATCH', {name: newGift})
+  let newIndex = getState().user.giftlist.length+1;
+  return fetchApi(`users/${userId}/add`, 'PATCH', {index: newIndex, name: newGift})
   .then(() => {
-    dispatch(putUserSuccess({name: newGift}))
+    dispatch(putUserSuccess({index: newIndex, name: newGift}))
   })
   .catch(err => {
     console.error(err);

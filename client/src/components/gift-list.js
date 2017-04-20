@@ -14,11 +14,16 @@ export class GiftList extends React.Component {
     const userId = this.props.match.params.userId;
     this.props.dispatch(getUser(userId));
   }
+  onClick(index) {
+    console.log('you clicked on item: ', index);
+    this.props.dispatch(updateGift(index));
+  }
+
   render() {
     let currentGifts;
     if(this.props.user.giftlist) {
       currentGifts = this.props.user.giftlist.map((gift, index) => 
-        <li key={index} className="items" > {gift.name} <span className="editBtn"> Edit </span></li>
+        <li key={index} className="items" > {gift.name} <span className="editBtn" onClick={ this.onClick.bind(this, index)}> Edit </span></li>
         // {giftlist}
       )
     }

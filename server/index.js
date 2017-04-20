@@ -72,7 +72,7 @@ app.post('/api/users', (req, res) => {
 app.patch('/api/users/:id/add', (req, res) => {
   console.log(req.body)
   User
-    .findByIdAndUpdate(req.params.id, {$push: {giftlist: {name: req.body.name}}}, {new: true})
+    .findByIdAndUpdate(req.params.id, {$push: {giftlist: {name: req.body.name, purchased: false}}}, {new: true})
     .then(updatedUser => res.status(201).json(updatedUser.apiRepr()))
     .catch(err => res.status(500).json({message: 'internal server error'}))
 })
