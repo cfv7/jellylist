@@ -13,6 +13,7 @@ const {User} = require('./models');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({extended: true}));
 
 mongoose.Promise = global.Promise;
 
@@ -47,6 +48,7 @@ app.get('/api/users/:id', (req, res) => {
     });
 })
 
+
 app.post('/api/users', (req, res) => {
   console.log(req.body)
   User
@@ -59,12 +61,20 @@ app.post('/api/users', (req, res) => {
     })
     .then(user => {
        console.log(user)
-       res.status(201).json(user.apiRepr());
+       res.status(201).json(user.apiRepr())
     })
     .catch(err => {
       console.log(err)
       res.status(500).json({message: 'Internal server error'})
     })
+})
+
+app.put('/api/users/:id/add', (req, res) => {
+  console.log(req.body)
+  User
+    .findByIdAndUpdate(req.params.id, {$push: {giftlist: {name: req.body.name}}}, {new: true})
+    .then(updatedUser => res.status(201).json(updatedUser.apiRepr()))
+    .catch(err => res.status(500).json({message: 'internal server error'}))
 })
 
 app.delete('/api/users/:id', (req, res) => {

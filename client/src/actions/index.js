@@ -54,26 +54,57 @@ export const getUser = (userId) => dispatch => {
   })
 }
 
-export const addGift = (userId, newGift) => (dispatch, getState) => {
-  dispatch(putUserRequest())
-  const state = getState()
-  const giftObject= {name: newGift};
-  return fetch(`/api/users/${userId}`, {
-    method: 'put',
-    body: JSON.stringify({id: userId, giftlist: [...state.user.giftlist, giftObject]
-    }),
+function fetchApi(path, method, body) {
+  const baseUrl = '/api';
+
+  return fetch(`${baseUrl}/${path}`, {
+    method,
+    body: JSON.stringify(body),
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
   })
+}
+
+export const addGift = (userId, newGift) => (dispatch, getState) => {
+  dispatch(putUserRequest())
+  return fetchApi(`users/${userId}/add`, 'put', {name: newGift})
   .then(() => {
-    dispatch(putUserSuccess(giftObject))
+    dispatch(putUserSuccess({name: newGift}))
   })
   .catch(err => {
     console.error(err);
     dispatch(putUserError(err))  
   })
 }
+
+// export const addGift = (userId, newGift) => (dispatch, getState) => {
+//   dispatch(putUserRequest())
+//   const state = getState()
+//   const giftObject= {name: newGift};
+//   return fetch(`/api/users/${userId}`, {
+//     method: 'put',
+//     body: JSON.stringify({id: userId, giftlist: [...state.user.giftlist, giftObject]
+//     }),
+//     headers: {
+//       'Accept': 'application/json',
+//       'Content-Type': 'application/json'
+//     }
+//   })
+//   .then(() => {
+//     dispatch(putUserSuccess(giftObject))
+//   })
+//   .catch(err => {
+//     console.error(err);
+//     dispatch(putUserError(err))  
+//   })
+// }
+
+export const editGift = (userID, giftIndex) => (dispatch, getState) => {
+  const state= getState()
+  return fetch()
+}
+
 
 // { id: ${userId}`, `${giftlist.newGift}

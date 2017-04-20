@@ -1,7 +1,8 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import { getUser } from '../actions';
-import AddGift from './add-gift'
+import AddGift from './add-gift';
+import EditGift from './edit-gift';
 
 
 export class GiftList extends React.Component {
@@ -17,17 +18,19 @@ export class GiftList extends React.Component {
     let currentGifts;
     if(this.props.user.giftlist) {
       currentGifts = this.props.user.giftlist.map((gift, index) => 
-        <li key={index} className="items" > {gift.name} </li>
+        <li key={index} className="items" > {gift.name} <span className="editBtn"> Edit </span></li>
         // {giftlist}
       )
     }
     return (
       <div className='container'>
+        <AddGift userId={this.props.match.params.userId}/>
         <h2 className='user-title'>{this.props.user.user}</h2>
         <ul>
           {currentGifts}
         </ul>
         <AddGift userId={this.props.match.params.userId}/>
+        <EditGift />
       </div>
     );
   }
