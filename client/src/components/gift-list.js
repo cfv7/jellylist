@@ -16,7 +16,7 @@ export class GiftList extends React.Component {
   }
   onClick(index) {
     console.log('you clicked on item: ', index);
-    this.props.dispatch(updateGift(index));
+    // this.props.dispatch(updateGift(index));
   }
 
   render() {
