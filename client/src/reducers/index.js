@@ -3,7 +3,8 @@ import * as actions from '../actions'
 const initialState = {
   user: "",
   loading: false,
-  error: null
+  error: null,
+  currentGiftIndex: 0
 }
 
 export const usersReducer = (state=initialState, action) => {
@@ -35,6 +36,11 @@ export const usersReducer = (state=initialState, action) => {
     console.log(updatedUser);
     return Object.assign({}, state, {
       user: updatedUser
+    })
+  }
+  else if (action.type === actions.SELECT_UPDATE_GIFT) {
+    return Object.assign({}, state, {
+      currentGiftIndex: action.index
     })
   }
   return state

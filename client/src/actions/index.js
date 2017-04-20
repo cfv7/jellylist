@@ -40,6 +40,12 @@ export const putUserError = (err) => ({
   error: err
 })
 
+export const SELECT_UPDATE_GIFT = 'SELECT_UPDATE_GIFT'
+export const selectUpdateGift = (index) => ({
+  type: SELECT_UPDATE_GIFT,
+  index
+})
+
 export const getUser = (userId) => dispatch => {
   dispatch(fetchUserRequest())
   return fetch(`/api/users/${userId}`).then(user => {
@@ -70,9 +76,9 @@ function fetchApi(path, method, body) {
 export const addGift = (userId, newGift) => (dispatch, getState) => {
   dispatch(putUserRequest())
   let newIndex = getState().user.giftlist.length+1;
-  return fetchApi(`users/${userId}/add`, 'PATCH', {index: newIndex, name: newGift})
+  return fetchApi(`users/${userId}/add`, 'PATCH', {name: newGift, purchased:false})
   .then(() => {
-    dispatch(putUserSuccess({index: newIndex, name: newGift}))
+    dispatch(putUserSuccess({name: newGift, purchased:false}))
   })
   .catch(err => {
     console.error(err);
@@ -101,11 +107,10 @@ export const addGift = (userId, newGift) => (dispatch, getState) => {
 //     dispatch(putUserError(err))  
 //   })
 // }
-
-export const editGift = (userID, giftIndex) => (dispatch, getState) => {
-  const state= getState()
-  return fetch()
-}
+// export const updateGift = (userID, giftIndex) => (dispatch, getState) => {
+//   const state= getState()
+//   return fetch()
+// }
 
 
 // { id: ${userId}`, `${giftlist.newGift}

@@ -1,6 +1,6 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import { getUser } from '../actions';
+import { getUser, selectUpdateGift } from '../actions';
 import AddGift from './add-gift';
 import EditGift from './edit-gift';
 
@@ -15,8 +15,7 @@ export class GiftList extends React.Component {
     this.props.dispatch(getUser(userId));
   }
   onClick(index) {
-    console.log('you clicked on item: ', index);
-    // this.props.dispatch(updateGift(index));
+    this.props.dispatch(selectUpdateGift(index));
   }
 
   render() {
@@ -35,7 +34,7 @@ export class GiftList extends React.Component {
           {currentGifts}
         </ul>
         <AddGift userId={this.props.match.params.userId}/>
-        <EditGift />
+        <EditGift index/>
       </div>
     );
   }
