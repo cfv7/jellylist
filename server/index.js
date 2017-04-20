@@ -69,7 +69,7 @@ app.post('/api/users', (req, res) => {
     })
 })
 
-app.put('/api/users/:id/add', (req, res) => {
+app.patch('/api/users/:id/add', (req, res) => {
   console.log(req.body)
   User
     .findByIdAndUpdate(req.params.id, {$push: {giftlist: {name: req.body.name}}}, {new: true})
