@@ -27,4 +27,16 @@ li.items {
     list-style: none;
     border: 1px solid #f3f3f3;
     color: #664266;
+    box-shadow: 1px 1px 1px #d8d8d8;
+}
+
+li.items span {
+    float: right;
+    cursor: pointer;
+    font-weight: bold;
+    color: #aca4a4;
+}
+
+.hidden {
+  display:none;
 }

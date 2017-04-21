@@ -40,6 +40,27 @@ export const putUserError = (err) => ({
   error: err
 })
 
+export const SELECT_UPDATE_GIFT = 'SELECT_UPDATE_GIFT'
+export const selectUpdateGift = (index) => ({
+  type: SELECT_UPDATE_GIFT,
+  index
+})
+
+export const UPDATE_GIFT = 'UPDATE_GIFT'
+export const updateGift = (gift) => ({
+  type: UPDATE_GIFT,
+  gift
+})
+
+export const ASYNC_UPDATE_GIFT = 'ASYNC_UPDATE_GIFT'
+export const asycnUpdateGift = (name, price_range, link, note) => ({
+  type: ASYNC_UPDATE_GIFT,
+  name,
+  price_range,
+  link,
+  note
+})
+
 export const getUser = (userId) => dispatch => {
   dispatch(fetchUserRequest())
   return fetch(`/api/users/${userId}`).then(user => {
@@ -69,9 +90,10 @@ function fetchApi(path, method, body) {
 
 export const addGift = (userId, newGift) => (dispatch, getState) => {
   dispatch(putUserRequest())
-  return fetchApi(`users/${userId}/add`, 'PATCH', {name: newGift})
+  let giftId = Math.round(Math.random()* 1000000);
+  return fetchApi(`users/${userId}/add`, 'PATCH', {name: newGift, giftId: giftId , purchased:false})
   .then(() => {
-    dispatch(putUserSuccess({name: newGift}))
+    dispatch(putUserSuccess({name: newGift, giftId, purchased:false}))
   })
   .catch(err => {
     console.error(err);
@@ -100,11 +122,10 @@ export const addGift = (userId, newGift) => (dispatch, getState) => {
 //     dispatch(putUserError(err))  
 //   })
 // }
-
-export const editGift = (userID, giftIndex) => (dispatch, getState) => {
-  const state= getState()
-  return fetch()
-}
+// export const updateGift = () => {
+//   const state= getState()
+//   return fetch()
+// }
 
 
 // { id: ${userId}`, `${giftlist.newGift}

@@ -1,9 +1,10 @@
 import * as actions from '../actions'
 
 const initialState = {
-  user: "",
+  user: {},
   loading: false,
-  error: null
+  error: null,
+  currentGiftIndex: 0
 }
 
 export const usersReducer = (state=initialState, action) => {
@@ -37,5 +38,26 @@ export const usersReducer = (state=initialState, action) => {
       user: updatedUser
     })
   }
+  else if (action.type === actions.SELECT_UPDATE_GIFT) {
+    return Object.assign({}, state, {
+      currentGiftIndex: action.index
+    })
+  }
+  // else if (action.type === actions.UPDATE_GIFT) {
+  //   // let newlist = [...state.user.giftlist]
+  //   // newlist.map(newlist => newlist.currentGiftIndex === action.currentGiftIndex ? {...newlist, } newlist)
+  //   // giftlisttemp: state.giftlisttemp.map(giftlisttemp => giftlisttemp.id=== gift ? {...giftlist})
+  //   // let updatedUser = Object.assign({}, state.user, {giftlist: giftlisttemp })
+  //   return Object.assign({}, state, {
+  //     user: updatedUser
+  //   })
+  // }
+  // else if (action.type === actions.ASYNC_UPDATE_GIFT) {
+  //   return Object.assign({}, state. {
+
+  //   }
+
+  //   )
+  // }
   return state
 }

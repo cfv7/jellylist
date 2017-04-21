@@ -48,6 +48,24 @@ app.get('/api/users/:id', (req, res) => {
     });
 })
 
+app.get('/api/users/:id/:index', (req, res) => {
+  User 
+    .findById(req.params.id)
+    .exec()
+    .then(index => {
+      console.log(index)
+      console.log(req.params.index)
+      if (!index) {
+        return res.status(400).send();
+      }
+      return res.send(index.giftlist[req.params.index])
+      index.giftlist[req.params.index] = req.body.something
+      index.save(function(err ){
+        return res.send(index.giftlist[req.params.index])
+        // or it fails
+      })
+    })
+})
 
 app.post('/api/users', (req, res) => {
   console.log(req.body)
@@ -72,10 +90,28 @@ app.post('/api/users', (req, res) => {
 app.patch('/api/users/:id/add', (req, res) => {
   console.log(req.body)
   User
-    .findByIdAndUpdate(req.params.id, {$push: {giftlist: {name: req.body.name}}}, {new: true})
+    .findByIdAndUpdate(req.params.id, {$push: {giftlist: {name: req.body.name, purchased: false}}}, {new: true})
     .then(updatedUser => res.status(201).json(updatedUser.apiRepr()))
     .catch(err => res.status(500).json({message: 'internal server error'}))
 })
+
+app.patch('/api/users/:id/:index', (req, res) => {
+  User 
+    .findById(req.params.id)
+    .exec()
+    .then(index => {
+      if (!index) {
+        return res.status(400).send();
+      }
+      // req.body.something = index.giftlist[req.params.index] 
+      index.save(function(err){
+        if(err) return res.status(500).send()
+        console.log(req.body.something)
+        return res.send(index.giftlist[req.params.index])
+      })
+    })
+})
+
 
 app.delete('/api/users/:id', (req, res) => {
   User
