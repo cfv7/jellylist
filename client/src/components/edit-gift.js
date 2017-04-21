@@ -5,24 +5,23 @@ export class EditGift extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            name: 'text',
-            price_range: '*****',
-            link:'http://www.google.com',
-            note:'Notes goes here',
+            name: '',
+            price_range: '',
+            link:'',
+            note:'',
             purchased: false
         }
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
-
-    onChange(e) {  
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
+    
     componentWillReceiveProps(newProps) {
         if (newProps.gift !== this.props.gift) {
             this.setState({gift: newProps.gift})
         }
+    }
+    onChange(e) {  
+        this.setState({ [e.target.name]: e.target.value });
     }
 
     onSubmit(e) {
@@ -40,7 +39,7 @@ export class EditGift extends React.Component {
                 <input onChange={this.onChange} type="text" name="price_range" id="editPrice_range" value={this.props.gift.price_range} />
                 <input onChange={this.onChange} type="text" name="link" id="editLink" value={this.props.gift.link} />
                 <input onChange={this.onChange} type="text" name="note" id="editNote" value={this.props.gift.note} />
-                <input type="submit" id="editGiftBtn" className="button" name="update" value="Update" />
+                 <input type="submit" id="editGiftBtn" className="button" name="update" value="Update" />
             </form>
         )        
 
