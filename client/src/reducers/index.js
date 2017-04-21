@@ -43,5 +43,12 @@ export const usersReducer = (state=initialState, action) => {
       currentGiftIndex: action.index
     })
   }
+  else if (action.type === actions.UPDATE_GIFT) {
+    let updatedUser = Object.assign({}, state.user, {giftlist: [...state.yser.giftlist, action.gift] })
+    console.log('--> Updated user. ',updatedUser)
+    return Object.assign({}, state, {
+      user: updatedUser
+    })
+  }
   return state
 }

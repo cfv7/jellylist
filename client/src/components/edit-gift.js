@@ -1,11 +1,13 @@
 import React from 'react'
 import {connect} from 'react-redux'
+import {updateGift} from '../actions'
 
 export class EditGift extends React.Component {
     constructor(props) {
         super(props);
+        console.log('after super props ->', props);
         this.state = {
-            name: '',
+            name: 'text',
             price_range: '',
             link:'',
             note:'',
@@ -14,19 +16,21 @@ export class EditGift extends React.Component {
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
-    
+
+
+
     componentWillReceiveProps(newProps) {
         if (newProps.gift !== this.props.gift) {
             this.setState({gift: newProps.gift})
         }
     }
-    onChange(e) {  
+    onChange(e) {
         this.setState({ [e.target.name]: e.target.value });
     }
 
     onSubmit(e) {
         e.preventDefault();
-        console.log(this.refs);
+        this.props.dispatch(updateGift());
     }
     render(){
         if (!this.props.gift) {
@@ -35,11 +39,11 @@ export class EditGift extends React.Component {
 
         return(
             <form onSubmit={this.onSubmit}>
-                <input onChange={this.onChange} type="text" name="name" id="editName" value={this.props.gift.name} />
-                <input onChange={this.onChange} type="text" name="price_range" id="editPrice_range" value={this.props.gift.price_range} />
-                <input onChange={this.onChange} type="text" name="link" id="editLink" value={this.props.gift.link} />
-                <input onChange={this.onChange} type="text" name="note" id="editNote" value={this.props.gift.note} />
-                 <input type="submit" id="editGiftBtn" className="button" name="update" value="Update" />
+                <input onChange={this.onChange} type="text" name="name" id="editName" defaultValue={this.state.name} />
+                <input onChange={this.onChange} type="text" name="price_range" id="editPrice_range" defaultValue={this.state.price_range} />
+                <input onChange={this.onChange} type="text" name="link" id="editLink" defaultValue={this.state.link} />
+                <input onChange={this.onChange} type="text" name="note" id="editNote" defaultValue={this.state.note} />
+                 <input type="submit" id="editGiftBtn" className="button" name="update" defaultValue="Update" />
             </form>
         )        
 

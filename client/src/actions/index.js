@@ -46,6 +46,12 @@ export const selectUpdateGift = (index) => ({
   index
 })
 
+export const UPDATE_GIFT = 'UPDATE_GIFT'
+export const updateGift = (gift) => ({
+  type: UPDATE_GIFT,
+  gift
+})
+
 export const getUser = (userId) => dispatch => {
   dispatch(fetchUserRequest())
   return fetch(`/api/users/${userId}`).then(user => {
