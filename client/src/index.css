@@ -36,3 +36,7 @@ li.items span {
     font-weight: bold;
     color: #aca4a4;
 }
+
+.hidden {
+  display:none;
+}
