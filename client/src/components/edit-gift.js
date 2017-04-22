@@ -1,61 +1,81 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {updateGift, asyncUpdateGift } from '../actions'
+import React from 'react';
+import { connect } from 'react-redux';
+import { updateGift, asyncUpdateGift, updateGifts } from '../actions';
 
 export class EditGift extends React.Component {
-    // constructor(props) {
-    //     super(props)
-    //     this.state = {
-    //         name: props.gift.name,
-    //         price_range: props.gift.price_range,
-    //         link: props.gift.link,
-    //         note: props.gift.note
-    //     }
-    // }
-    // state = {
-    //     name: this.props.gift.name,
-    //     price_range: this.props.gift.price_range,
-    //     link: this.props.gift.link,
-    //     note: this.props.gift.note
-    // }
+  state = {
+    gifts: this.props.gifts,
+  };
 
-    // componentWillReceiveProps(newProps) {
-    //     if (newProps.gift !== this.props.gift) {
-    //         this.setState({gift: newProps.gift})
-    //     }
-    // }
-
-    /*onChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
-    }
-
-    onSubmit = (e) => {
-        e.preventDefault();
-        this.props.dispatch(updateGift(this.state));
-    }
-    render(){
-        if (!this.props.gift) {
-            return <div />
+  onChange = e => {
+    this.setState({
+      gifts: this.state.gifts.map(item => {
+        if (this.state.gifts.indexOf(item) === this.props.currentGift) {
+          return {
+            ...item,
+            [e.target.name]: e.target.value,
+          };
+        } else {
+          return item;
         }
+      }),
+    });
+  };
 
-        return(
-            <form onSubmit={this.onSubmit}>
-                <input onChange={this.onChange} type="text" name="name" id="editName" value={this.state.name} />
-                <input onChange={this.onChange} type="text" name="price_range" id="editPrice_range" value={this.state.price_range} />
-                <input onChange={this.onChange} type="text" name="link" id="editLink" value={this.state.link} />
-                <input onChange={this.onChange} type="text" name="note" id="editNote" value={this.state.note} />
-                 <input type="submit" id="editGiftBtn" className="button" name="update" value="Update" />
-            </form>
-        )        
+  onSubmit = e => {
+    e.preventDefault();
+    this.props.updateGifts(this.state);
+  };
 
-
-    }*/
-    render() {
-        console.log(this.props);
-        return <h1>Hello</h1>;
+  render() {
+    if (!this.props.gifts) {
+      return <h1>Hello</h1>;
     }
+    return (
+      <form onSubmit={this.onSubmit}>
+        <input
+          onChange={this.onChange}
+          type="text"
+          name="name"
+          id="editName"
+          value={this.state.gifts[this.props.currentGift].name || ''}
+        />
+        <input
+          onChange={this.onChange}
+          type="text"
+          name="price_range"
+          id="editPrice_range"
+          value={this.state.gifts[this.props.currentGift].price_range || 'yo'}
+        />
+        <input
+          onChange={this.onChange}
+          type="text"
+          name="link"
+          id="editLink"
+          value={this.state.gifts[this.props.currentGift].link || 'yo'}
+        />
+        <input
+          onChange={this.onChange}
+          type="text"
+          name="note"
+          id="editNote"
+          value={this.state.gifts[this.props.currentGift].note || 'yo'}
+        />
+        <input
+          type="submit"
+          id="editGiftBtn"
+          className="button"
+          name="update"
+          value="Update"
+        />
+      </form>
+    );
+  }
 }
-const mapStateToProps = function (state, prop) {
-    return { gift: state.user.giftlist[state.currentGiftIndex]}
-}
-export default connect(mapStateToProps)(EditGift)
+const mapStateToProps = function(state) {
+  return {
+    gifts: state.user.giftlist,
+    currentGift: state.currentGiftIndex,
+  };
+};
+export default connect(mapStateToProps, { updateGifts })(EditGift);
