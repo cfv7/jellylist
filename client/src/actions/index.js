@@ -53,7 +53,7 @@ export const updateGift = (gift) => ({
 })
 
 export const ASYNC_UPDATE_GIFT = 'ASYNC_UPDATE_GIFT'
-export const asycnUpdateGift = (name, price_range, link, note) => ({
+export const asyncUpdateGift = (name, price_range, link, note) => ({
   type: ASYNC_UPDATE_GIFT,
   name,
   price_range,

@@ -9,18 +9,18 @@ const initialState = {
 
 export const usersReducer = (state=initialState, action) => {
   if (action.type === actions.FETCH_USER_REQUEST) {
-    return Object.assign({}, state, {loading: action.loading})
+    return Object.assign({}, state, {loading: true})
   }
   else if (action.type === actions.FETCH_USER_SUCCESS) {
     return Object.assign({}, state, {
       user: action.user,
-      loading: action.loading,
+      loading: false,
       error: action.error
     })
   }
   else if (action.type === actions.FETCH_USER_ERROR) {
     return Object.assign({}, state, {
-      loading: action.loading,
+      loading: false,
       error: action.error
     })
   }
@@ -52,12 +52,12 @@ export const usersReducer = (state=initialState, action) => {
   //     user: updatedUser
   //   })
   // }
-  // else if (action.type === actions.ASYNC_UPDATE_GIFT) {
-  //   return Object.assign({}, state. {
-
-  //   }
-
-  //   )
-  // }
+  else if (action.type === actions.ASYNC_UPDATE_GIFT) {
+    console.log('reducer ->', action);
+    return state;
+    // return Object.assign({}, state. {
+       
+    // }
+  }
   return state
 }

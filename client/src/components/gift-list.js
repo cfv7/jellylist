@@ -7,10 +7,7 @@ import EditGift from './edit-gift';
 
 
 export class GiftList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
+  
   componentDidMount(){
     const userId = this.props.match.params.userId;
     this.props.dispatch(getUser(userId));
@@ -20,6 +17,10 @@ export class GiftList extends React.Component {
 
   }
   render() {
+    console.log(this.props);
+    if (this.props.loading) {
+      return <h1>Loading...</h1>;
+    }
     let currentGifts;
     console.log(this.props.user.giftlist);
     if(this.props.user.giftlist) {
@@ -35,7 +36,7 @@ export class GiftList extends React.Component {
           {currentGifts}
         </ul>
         <AddGift userId={this.props.match.params.userId}/>
-        <EditGift index className='hidden'/>
+        <EditGift index/>
       </div>
     );
   }
@@ -43,7 +44,7 @@ export class GiftList extends React.Component {
 
 // const mapStateToProps = state => ({gifts: state.giftlist});
 const mapStateToProps = function(state, prop){
-  return {user: state.user};
+  return {user: state.user, loading:state.loading};
 }
 
 export default connect(mapStateToProps)(GiftList)

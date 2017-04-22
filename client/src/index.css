@@ -40,3 +40,23 @@ li.items span {
 .hidden {
   display:none;
 }
+
+form {
+  color: purple;
+}
+
+input {
+  margin-right:15px;
+  background-color: #f8f8f8;
+}
+
+input[type="submit"]:hover {
+  border: 1px solid #E3E2E7;
+}
+
+input[type="submit"] {
+  background: #f1f0f0;
+  box-shadow: 1px 1px 1px #d8d8d8;
+  color: #664266;
+  border: 1px solid #f3f3f3;
+}
