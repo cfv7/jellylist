@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 
 
 export class SignIn extends React.Component {
-    constructor(props) {
+    constructor(props) { //WH: unsure if sign-in is working but if it is, you don't need to constructor/super props since (as far as I can tell) you don't pass any down
         super(props);
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);

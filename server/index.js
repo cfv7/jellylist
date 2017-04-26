@@ -18,7 +18,7 @@ app.use(bodyParser.urlencoded({extended: true}));
 mongoose.Promise = global.Promise;
 
 // API endpoints go here!
-app.get('/api/users', (req, res) => {
+app.get('/api/users', (req, res) => { //WH: It doesn't look like this is being used outside of testing, so might want to comment it out or delete it
   User 
     .find()
     .exec()
@@ -126,7 +126,7 @@ app.delete('/api/users/:id', (req, res) => {
     })
 })
 
-app.put('/api/users/:id', (req, res) => {
+app.put('/api/users/:id', (req, res) => { //WH: nothing wrong with it but not clear why you switched from patch to put 
   const updated = {};
   const updateableFields = ['user', 'email', 'giftlist', 'birthday'];
   updateableFields.forEach(field => {
