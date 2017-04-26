@@ -7,7 +7,7 @@ import EditGift from './edit-gift';
 export class GiftList extends React.Component {
   componentDidMount() {
     const userId = this.props.match.params.userId;
-    this.props.dispatch(getUser(userId));
+    this.props.dispatch(getUser(userId)); //WH: don't think you get a lot by defining userId if you only call it once
   }
   onClick(index) {
     this.props.dispatch(selectUpdateGift(index));
@@ -15,7 +15,7 @@ export class GiftList extends React.Component {
   render() {
     console.log(this.props);
     if (this.props.loading) {
-      return <h1>Loading...</h1>;
+      return <h1>Loading...</h1>; //WH: does this work? I thought you had to wrap all JSX in parentheses but maybe I'm wrong
     }
     let currentGifts;
     console.log(this.props.user.giftlist);
@@ -41,7 +41,7 @@ export class GiftList extends React.Component {
           {currentGifts}
         </ul>
         <AddGift userId={this.props.match.params.userId} />
-        <EditGift index />
+        <EditGift index /> {/*WH: not sure what index does here - could be correct, just never seen this before.*/} 
       </div>
     );
   }

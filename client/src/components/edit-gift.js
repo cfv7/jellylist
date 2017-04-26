@@ -7,7 +7,7 @@ export class EditGift extends React.Component {
     gifts: this.props.gifts,
   };
 
-  onChange = e => {
+  onChange = e => { //WH: this seems like a lot of work to go through every time something changes on the form. Why not throw this into the onSubmit as well? Doing so would also enable you to avoid having state for this component
     this.setState({
       gifts: this.state.gifts.map(item => {
         if (this.state.gifts.indexOf(item) === this.props.currentGift) {
@@ -45,7 +45,7 @@ export class EditGift extends React.Component {
           type="text"
           name="price_range"
           id="editPrice_range"
-          value={this.state.gifts[this.props.currentGift].price_range || 'yo'}
+          value={this.state.gifts[this.props.currentGift].price_range || 'yo'} //WH: would not advise displaying 'yo'
         />
         <input
           onChange={this.onChange}
