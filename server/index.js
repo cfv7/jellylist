@@ -1,15 +1,15 @@
 const path = require('path');
 const express = require('express');
 const mongoose = require('mongoose');
-const passport = require('passport')
-const {BasicStrategy} = require('passport-http')
+const passport = require('passport');
+const { BasicStrategy } = require('passport-http');
 const bcrypt = require('bcryptjs');
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
 require('dotenv').config();
 
-const {PORT, DATABASE_URL} = require('./config');
+const { PORT, DATABASE_URL } = require('./config');
 
-const {User} = require('./models');
+const { User } = require('./models');
 
 const app = express();
 app.use(bodyParser.json());
@@ -75,7 +75,7 @@ app.post('/api/users', (req, res) => {
       email: req.body.email,
       password: req.body.password,
       birthday: req.body.birthday,
-      giftlist: req.body.giftlist
+      giftlist: req.body.giftlist // Instead of pulling off an empty array from the req body, mabe just initialize the new document with an empty array?
     })
     .then(user => {
        console.log(user)
@@ -104,6 +104,9 @@ app.patch('/api/users/:id/:index', (req, res) => {
         return res.status(400).send();
       }
       // req.body.something = index.giftlist[req.params.index] 
+      // It looks like .save is a method on the model (in your case, User) and not any retrieved documents
+      // It is for saving a new instance of the model in the database: http://mongoosejs.com/docs/models.html
+      // Maybe you don't mean to use this endpoint any more?
       index.save(function(err){
         if(err) return res.status(500).send()
         console.log(req.body.something)
@@ -127,6 +130,17 @@ app.delete('/api/users/:id', (req, res) => {
 })
 
 app.put('/api/users/:id', (req, res) => {
+  // Using $set to update giftlist works for sure but I'm assuming you want to use this endpoint
+  // to delete items from giftlist. Instead of replacing whole array each time, you could use:
+  // ------
+  // .findByIdAndUpdate(
+  //    req.params.id,
+  //    { $pull: { giftlist: { _id: itemId } } },
+  //    {safe: true}
+	// 	).exec()
+  // -------
+  // This would remove the one selected item with the given id, for example
+
   const updated = {};
   const updateableFields = ['user', 'email', 'giftlist', 'birthday'];
   updateableFields.forEach(field => {

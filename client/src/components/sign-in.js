@@ -5,6 +5,11 @@ import {connect} from 'react-redux'
 export class SignIn extends React.Component {
     constructor(props) {
         super(props);
+        // I don't think you need to .bind the 'this' context here since you aren't passing these functions
+        // down to other components as props. 
+        // When you declare the methods this.onChange and this.onSubmit, maybe just remember that these are events
+        // so they will generate an event object. 
+        // So you will write it like: onChange={e => this.onChange(e)}
         this.onChange = this.onChange.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
