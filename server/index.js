@@ -103,10 +103,12 @@ app.patch('/api/users/:id/:index', (req, res) => {
       if (!index) {
         return res.status(400).send();
       }
-      // req.body.something = index.giftlist[req.params.index] 
-      index.save(function(err){
+      index.giftlist[req.params.index] = req.body
+      User.update({_id: req.params.id}, {$set: {giftlist: index.giftlist}}, function(err){
+      // index.save(function(err){
         if(err) return res.status(500).send()
-        console.log(req.body.something)
+        console.log(req.body)
+        console.log(res.body)
         return res.send(index.giftlist[req.params.index])
       })
     })

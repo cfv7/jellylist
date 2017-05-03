@@ -7,6 +7,13 @@ export class EditGift extends React.Component {
     gifts: this.props.gifts,
   };
 
+
+// we want to connect to the redux store
+// may need to write some more actions
+// we need to be able to pull from the store and be able to edit it real-time
+// be able to save / push it back via an update and then send new store to mlab
+
+
   onChange = e => {
     this.setState({
       gifts: this.state.gifts.map(item => {
@@ -24,7 +31,7 @@ export class EditGift extends React.Component {
 
   onSubmit = e => {
     e.preventDefault();
-    this.props.updateGifts(this.state);
+    this.props.updateGifts(this.props.userId, this.props.currentGift, this.state.gifts[this.props.currentGift]);
   };
 
   render() {
@@ -74,8 +81,9 @@ export class EditGift extends React.Component {
 }
 const mapStateToProps = function(state) {
   return {
+    userId: state.user.id,
     gifts: state.user.giftlist,
-    currentGift: state.currentGiftIndex,
+    currentGift: state.currentGiftIndex
   };
 };
 export default connect(mapStateToProps, { updateGifts })(EditGift);

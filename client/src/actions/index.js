@@ -106,44 +106,18 @@ export const addGift = (userId, newGift) => (dispatch, getState) => {
     });
 };
 
-// export const addGift = (userId, newGift) => (dispatch, getState) => {
-//   dispatch(putUserRequest())
-//   const state = getState()
-//   const giftObject= {name: newGift};
-//   return fetch(`/api/users/${userId}`, {
-//     method: 'put',
-//     body: JSON.stringify({id: userId, giftlist: [...state.user.giftlist, giftObject]
-//     }),
-//     headers: {
-//       'Accept': 'application/json',
-//       'Content-Type': 'application/json'
-//     }
-//   })
-//   .then(() => {
-//     dispatch(putUserSuccess(giftObject))
-//   })
-//   .catch(err => {
-//     console.error(err);
-//     dispatch(putUserError(err))
-//   })
-// }
-// export const updateGift = () => {
-//   const state= getState()
-//   return fetch()
-// }
-
-// { id: ${userId}`, `${giftlist.newGift}
-
 export const UPDATE_GIFTS = 'UPDATE_GIFTS';
 export const UPDATE_GIFTS_SUCCESS = 'UPDATE_GIFTS_SUCCESS';
 export const UPDATE_GIFTS_ERROR = 'UPDATE_GIFTS_ERROR';
 
-export function updateGifts(gifts) {
+export function updateGifts(userId, currentGiftIndex, gifts) {
   return async dispatch => {
     dispatch({ type: UPDATE_GIFT });
 
     try {
-      const res = await fetchApi('API_URL', 'PATCH', gifts);
+      console.log(gifts)
+      console.log(userId)
+      const res = await fetchApi( `users/${userId}/${currentGiftIndex}`, 'PATCH', gifts);
 
       return dispatch({ type: UPDATE_GIFTS_SUCCESS, data: res.data });
     } catch (e) {
