@@ -1,56 +1,91 @@
-import React from 'react'
-import {connect} from 'react-redux'
-import {updateGift, asyncUpdateGift } from '../actions'
+import React from "react"
+import { connect } from "react-redux"
+import { updateGift, asyncUpdateGift, updateGifts } from "../actions"
 
 export class EditGift extends React.Component {
-    constructor(props) {
-        super(props);
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-    }
+  state = {
+    gifts: this.props.gifts
+  }
 
+  // we want to connect to the redux store
+  // may need to write some more actions
+  // we need to be able to pull from the store and be able to edit it real-time
+  // be able to save / push it back via an update and then send new store to mlab
 
-
-    componentWillReceiveProps(newProps) {
-        if (newProps.gift !== this.props.gift) {
-            this.setState({gift: newProps.gift})
+  onChange = e => {
+    this.setState({
+      gifts: this.state.gifts.map(item => {
+        if (this.state.gifts.indexOf(item) === this.props.currentGift) {
+          return {
+            ...item,
+            [e.target.name]: e.target.value
+          }
+        } else {
+          return item
         }
+      })
+    })
+  }
+
+  onSubmit = e => {
+    e.preventDefault()
+    this.props.updateGifts(
+      this.props.userId,
+      this.props.currentGift,
+      this.state.gifts[this.props.currentGift]
+    )
+  }
+
+  render() {
+    if (!this.props.gifts) {
+      return <h1>Hello</h1>
     }
-
-
-
-    onChange(e) {
-        // this.setState({ [e.target.name]: e.target.value });
-        this.props.dispatch(asyncUpdateGift(this.props.gift.name, this.props.gift.price_range, this.props.gift.link, this.props.gift.note));
-    }
-
-    onSubmit(e) {
-        e.preventDefault();
-        this.props.dispatch(updateGift(this.state));
-    }
-    render(){
-        if (!this.props.gift) {
-            return <div />
-        }
-
-        return(
-            <form onSubmit={this.onSubmit}>
-                <input onChange={this.onChange} ref="name" type="text" name="name" id="editName" value={this.props.gift.name} />
-                <input onChange={this.onChange} ref="price_range" type="text" name="price_range" id="editPrice_range" value={this.props.gift.price_range} />
-                <input onChange={this.onChange} ref="link" type="text" name="link" id="editLink" value={this.props.gift.link} />
-                <input onChange={this.onChange} ref="note" type="text" name="note" id="editNote" value={this.props.gift.note} />
-                 <input type="submit" id="editGiftBtn" className="button" name="update" value="Update" />
-            </form>
-        )        
-
-
-    }
+    return (
+      <form onSubmit={this.onSubmit}>
+        <input
+          onChange={this.onChange}
+          type="text"
+          name="name"
+          id="editName"
+          value={this.state.gifts[this.props.currentGift].name || ""}
+        />
+        <input
+          onChange={this.onChange}
+          type="text"
+          name="price_range"
+          id="editPrice_range"
+          value={this.state.gifts[this.props.currentGift].price_range || ""}
+        />
+        <input
+          onChange={this.onChange}
+          type="text"
+          name="link"
+          id="editLink"
+          value={this.state.gifts[this.props.currentGift].link || ""}
+        />
+        <input
+          onChange={this.onChange}
+          type="text"
+          name="note"
+          id="editNote"
+          value={this.state.gifts[this.props.currentGift].note || ""}
+        />
+        <input
+          type="submit"
+          id="editGiftBtn"
+          className="button"
+          name="update"
+          value="Update"
+        />
+      </form>
+    )
+  }
 }
-const mapStateToProps = function (state, prop) {
-    if (state.user.giftlist !== undefined) {
-        return { gift: state.user.giftlist[state.currentGiftIndex]}
-    } else {
-        return {}
-    }
+const mapStateToProps = function(state) {
+  return {
+    userId: state.user.id,
+    gifts: state.user.giftlist,
+    currentGift: state.currentGiftIndex
+  }
 }
-export default connect(mapStateToProps)(EditGift)
+export default connect(mapStateToProps, { updateGifts })(EditGift)

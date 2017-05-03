@@ -1,0 +1,45 @@
+{
+"user": "Jelly123",
+"email": "colin@gmail.com",
+"password": "colin123",
+"birthday": "04/10",
+"giftlist": [{
+    "index": 1,
+    "name": "PS4",
+    "price_range": "*****",
+    "link": "bestbuy.com",
+    "note": "Sony Playstation for the win",
+    "purchased": false
+  },
+  {
+    "index": 2,
+    "name": "Amazon Echo",
+    "price_range": "*****",
+    "link": "bestbuy.com",
+    "note": "Need Alexa.",
+    "purchased": false
+  }]
+}
+{
+	"user": "Jelly456",
+		"email": "ally@gmail.com",
+		"password": "ally123",
+		"birthday": "09/10",
+		"giftlist":
+			{
+				"index": 1,
+				"name": "Amazon Echo",
+				"price_range": "*****",
+				"link": "bestbuy.com",
+				"note": "Need Alexa.",
+				"purchased": false
+			},
+			{
+				"index": 2,
+				"name": "PS6",
+				"price_range": "*****",
+				"link": "bestbuy.com",
+				"note": "Sony Playstation for the win",
+				"purchased": false
+			}
+}

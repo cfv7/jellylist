@@ -28,9 +28,12 @@
     "http-proxy-middleware": "^0.17.3",
     "mongoose": "^4.9.5",
     "npm-run-all": "^4.0.1",
-    "react-router-dom": "^4.1.1",
     "passport": "^0.3.2",
     "passport-http": "^0.3.0",
+    "react-router-dom": "^4.1.1",
     "xp": "^1.0.1"
+  },
+  "devDependencies": {
+    "redux-logger": "^3.0.1"
   }
 }

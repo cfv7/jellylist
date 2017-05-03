@@ -1,49 +1,50 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import { getUser, selectUpdateGift } from '../actions';
-import AddGift from './add-gift';
-import EditGift from './edit-gift';
-
-
+import React from "react"
+import { connect } from "react-redux"
+import { getUser, selectUpdateGift } from "../actions"
+import AddGift from "./add-gift"
+import EditGift from "./edit-gift"
+import Gift from "./gift"
 
 export class GiftList extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
-  componentDidMount(){
-    const userId = this.props.match.params.userId;
-    this.props.dispatch(getUser(userId));
+  componentDidMount() {
+    const userId = this.props.match.params.userId
+    this.props.dispatch(getUser(userId))
   }
   onClick(index) {
-    this.props.dispatch(selectUpdateGift(index));
-
+    this.props.dispatch(selectUpdateGift(index))
   }
   render() {
-    let currentGifts;
-    console.log(this.props.user.giftlist);
-    if(this.props.user.giftlist) {
-      currentGifts = this.props.user.giftlist.map((item, index) => 
-        <li key={index} className="items" > {item.name} <span className="editBtn" onClick={ this.onClick.bind(this, index)}> Edit </span></li>
+    console.log(this.props)
+    if (this.props.loading) {
+      return <h1>Loading...</h1>
+    }
+    let currentGifts
+    console.log(this.props.user.giftlist)
+    if (this.props.user.giftlist) {
+      currentGifts = this.props.user.giftlist.map(
+        (item, index) => (
+          <li key={index} className="items">
+            <Gift index={index} />
+          </li>
+        )
         // {giftlist}
       )
     }
     return (
-      <div className='container'>
-        <h2 className='user-title'>{this.props.user.user}</h2>
+      <div className="container">
+        <h2 className="user-title">{this.props.user.user}</h2>
         <ul>
           {currentGifts}
         </ul>
-        <AddGift userId={this.props.match.params.userId}/>
-        <EditGift index className='hidden'/>
+        <AddGift userId={this.props.match.params.userId} />
       </div>
-    );
+    )
   }
 }
 
 // const mapStateToProps = state => ({gifts: state.giftlist});
-const mapStateToProps = function(state, prop){
-  return {user: state.user};
+const mapStateToProps = function(state, prop) {
+  return { user: state.user, loading: state.loading }
 }
 
 export default connect(mapStateToProps)(GiftList)
