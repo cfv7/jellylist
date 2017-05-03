@@ -1,18 +1,16 @@
-import React from 'react';
-import { connect } from 'react-redux';
-import { updateGift, asyncUpdateGift, updateGifts } from '../actions';
+import React from "react"
+import { connect } from "react-redux"
+import { updateGift, asyncUpdateGift, updateGifts } from "../actions"
 
 export class EditGift extends React.Component {
   state = {
-    gifts: this.props.gifts,
-  };
+    gifts: this.props.gifts
+  }
 
-
-// we want to connect to the redux store
-// may need to write some more actions
-// we need to be able to pull from the store and be able to edit it real-time
-// be able to save / push it back via an update and then send new store to mlab
-
+  // we want to connect to the redux store
+  // may need to write some more actions
+  // we need to be able to pull from the store and be able to edit it real-time
+  // be able to save / push it back via an update and then send new store to mlab
 
   onChange = e => {
     this.setState({
@@ -20,23 +18,27 @@ export class EditGift extends React.Component {
         if (this.state.gifts.indexOf(item) === this.props.currentGift) {
           return {
             ...item,
-            [e.target.name]: e.target.value,
-          };
+            [e.target.name]: e.target.value
+          }
         } else {
-          return item;
+          return item
         }
-      }),
-    });
-  };
+      })
+    })
+  }
 
   onSubmit = e => {
-    e.preventDefault();
-    this.props.updateGifts(this.props.userId, this.props.currentGift, this.state.gifts[this.props.currentGift]);
-  };
+    e.preventDefault()
+    this.props.updateGifts(
+      this.props.userId,
+      this.props.currentGift,
+      this.state.gifts[this.props.currentGift]
+    )
+  }
 
   render() {
     if (!this.props.gifts) {
-      return <h1>Hello</h1>;
+      return <h1>Hello</h1>
     }
     return (
       <form onSubmit={this.onSubmit}>
@@ -45,28 +47,28 @@ export class EditGift extends React.Component {
           type="text"
           name="name"
           id="editName"
-          value={this.state.gifts[this.props.currentGift].name || ''}
+          value={this.state.gifts[this.props.currentGift].name || ""}
         />
         <input
           onChange={this.onChange}
           type="text"
           name="price_range"
           id="editPrice_range"
-          value={this.state.gifts[this.props.currentGift].price_range || 'yo'}
+          value={this.state.gifts[this.props.currentGift].price_range || ""}
         />
         <input
           onChange={this.onChange}
           type="text"
           name="link"
           id="editLink"
-          value={this.state.gifts[this.props.currentGift].link || 'yo'}
+          value={this.state.gifts[this.props.currentGift].link || ""}
         />
         <input
           onChange={this.onChange}
           type="text"
           name="note"
           id="editNote"
-          value={this.state.gifts[this.props.currentGift].note || 'yo'}
+          value={this.state.gifts[this.props.currentGift].note || ""}
         />
         <input
           type="submit"
@@ -76,7 +78,7 @@ export class EditGift extends React.Component {
           value="Update"
         />
       </form>
-    );
+    )
   }
 }
 const mapStateToProps = function(state) {
@@ -84,6 +86,6 @@ const mapStateToProps = function(state) {
     userId: state.user.id,
     gifts: state.user.giftlist,
     currentGift: state.currentGiftIndex
-  };
-};
-export default connect(mapStateToProps, { updateGifts })(EditGift);
+  }
+}
+export default connect(mapStateToProps, { updateGifts })(EditGift)
