@@ -118,7 +118,9 @@ export function updateGifts(userId, currentGiftIndex, gifts) {
       console.log(gifts)
       console.log(userId)
       const res = await fetchApi( `users/${userId}/${currentGiftIndex}`, 'PATCH', gifts);
-
+      
+      dispatch(getUser(userId));
+      
       return dispatch({ type: UPDATE_GIFTS_SUCCESS, data: res.data });
     } catch (e) {
       return dispatch({ type: UPDATE_GIFTS_ERROR, e });
