@@ -21,6 +21,7 @@
   "author": "Joe Turner <jturner@thinkful.com>",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.16.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
     "cross-env": "^3.1.4",
