@@ -17,6 +17,7 @@ export class EditGift extends React.Component {
       gifts: this.state.gifts.map(item => {
         if (this.state.gifts.indexOf(item) === this.props.currentGift) {
           return {
+            
             ...item,
             [e.target.name]: e.target.value
           }
