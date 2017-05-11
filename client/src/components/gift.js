@@ -9,6 +9,7 @@ class Gift extends Component {
   }
   toggle() {
     this.setState({ showEdit: !this.state.showEdit })
+    // this.dispatch(function toggleIndex(){})
   }
   render() {
     return (
@@ -28,7 +29,7 @@ class Gift extends Component {
 
 const mapStateToProps = function(state, props) {
   return {
-    gift: state.user.giftlist[props.index]
+    gift: state.user.giftlist[props.index],
   }
 }
 
