@@ -63,14 +63,57 @@ app.get("/api/users/:id/:index", (req, res) => {
 })
 
 app.post("/api/users", (req, res) => {
-  console.log(req.body)
-  User.create({
-    user: req.body.user,
-    email: req.body.email,
-    password: req.body.password,
-    birthday: req.body.birthday,
-    giftlist: req.body.giftlist
-  })
+  let {user, email, password, birthday, giftlist} = req.body
+  console.log('post user ->', req.body)
+  if(!req.body) {
+    return res.status(400).json({message: 'no request body.'})
+  }
+  if(!('user' in req.body)) {
+    return res.status(422).json({message: 'missing field: user'})
+  }
+  if(typeof user !== 'string') {
+    return res.status(422).json({message: 'incorrect field type: user'})
+  }
+  if(user === '') {
+    return res.status(422).json({message: 'incorrect field length: user'})
+  }
+  if(!(password)) {
+    return res.status(422).json({message: 'missing field: password'})
+  }
+  if(typeof password !== 'string') {
+    return res.status(422).json({message: 'incorrect field type: password'})
+  }
+  if(password === '') {
+    return res.status(422).json({message: 'incorrect field length: password'})
+  }
+  User
+    .find({username})
+    .count()
+    .exec()
+    .then(count => {
+      if(count > 0) {
+        return res.status(400).json({message: 'user taken'})
+      }
+      return User.hashPassword(password)
+    })
+    .then(hash => {
+      return User
+      .create({
+        user: user.trim(),
+        email: email,
+        password: hash,
+        birthday: birthday,
+        giftlist: giftlist
+      })
+      console.log(password)
+    })
+  //   .create({
+  //   user: req.body.user,
+  //   email: req.body.email,
+  //   password: req.body.password,
+  //   birthday: req.body.birthday,
+  //   giftlist: req.body.giftlist
+  // })
     .then(user => {
       console.log(user)
       res.status(201).json(user.apiRepr())
