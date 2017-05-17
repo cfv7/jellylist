@@ -23,6 +23,7 @@
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.17.1",
+    "build": "^0.1.4",
     "cross-env": "^3.1.4",
     "express": "^4.14.1",
     "http-proxy-middleware": "^0.17.3",
@@ -32,6 +33,7 @@
     "passport-http": "^0.3.0",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
+    "react-scripts": "^0.9.5",
     "xp": "^1.0.1"
   },
   "devDependencies": {
