@@ -128,7 +128,7 @@ app.patch("/api/users/:id/add", (req, res) => {
   console.log(req.body)
   User.findByIdAndUpdate(
     req.params.id,
-    { $push: { giftlist: { name: req.body.name, purchased: false } } },
+    { $push: { giftlist: { name: req.body.name, purchased: false, editing: false } } },
     { new: true }
   )
     .then(updatedUser => res.status(201).json(updatedUser.apiRepr()))

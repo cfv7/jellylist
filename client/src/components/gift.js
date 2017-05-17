@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import EditGift from "./edit-gift"
+import { selectUpdateGift } from "../actions"
 
 class Gift extends Component {
   constructor() {
@@ -9,8 +10,11 @@ class Gift extends Component {
   }
   toggle() {
     this.setState({ showEdit: !this.state.showEdit })
-    // this.dispatch(function toggleIndex(){})
+    this.props.dispatch(selectUpdateGift(this.props.index))
   }
+
+  // {item.editing ? 'editing' : }
+  
   render() {
     return (
       <div>
@@ -30,6 +34,7 @@ class Gift extends Component {
 const mapStateToProps = function(state, props) {
   return {
     gift: state.user.giftlist[props.index],
+    index: props.index
   }
 }
 
