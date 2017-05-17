@@ -37,9 +37,15 @@ export const usersReducer = (state = initialState, action) => {
       user: updatedUser
     })
   } else if (action.type === actions.SELECT_UPDATE_GIFT) {
-    return Object.assign({}, state, {
-      currentGiftIndex: action.index
-    })
+    let updatedGift = state.user.giftlist.map((gift, i) => i === action.index ? {...gift, editing: !gift.editing} : gift);
+    return {
+       ...state,
+       currentGiftIndex: action.index,
+       user: {
+         ...state.user,
+         giftlist: updatedGift
+       }
+    } 
   } else if (action.type === actions.ASYNC_UPDATE_GIFT) {
     console.log("reducer ->", action)
     return state

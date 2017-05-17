@@ -95,7 +95,7 @@ export const addGift = (userId, newGift) => (dispatch, getState) => {
   return fetchApi(`users/${userId}/add`, "PATCH", {
     name: newGift,
     giftId: giftId,
-    purchased: false
+    purchased: false,
   })
     .then(() => {
       dispatch(putUserSuccess({ name: newGift, giftId, purchased: false }))
