@@ -14,12 +14,12 @@ export class GiftList extends React.Component {
     this.props.dispatch(selectUpdateGift(index))
   }
   render() {
-    console.log(this.props)
+    // console.log(this.props)
     if (this.props.loading) {
       return <h1>Loading...</h1>
     }
     let currentGifts
-    console.log(this.props.user.giftlist)
+    // console.log(this.props.user.giftlist)
     if (this.props.user.giftlist) {
       currentGifts = this.props.user.giftlist.map(
         (item, index) => (

@@ -2,22 +2,16 @@ import React from "react"
 import { connect } from "react-redux"
 import { updateGift, asyncUpdateGift, updateGifts } from "../actions"
 
-export class EditGift extends React.Component {
+class EditGift extends React.Component {
   state = {
     gifts: this.props.gifts
   }
-
-  // we want to connect to the redux store
-  // may need to write some more actions
-  // we need to be able to pull from the store and be able to edit it real-time
-  // be able to save / push it back via an update and then send new store to mlab
 
   onChange = e => {
     this.setState({
       gifts: this.state.gifts.map(item => {
         if (this.state.gifts.indexOf(item) === this.props.currentGift) {
-          return {
-            
+          return {      
             ...item,
             [e.target.name]: e.target.value
           }

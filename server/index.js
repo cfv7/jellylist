@@ -22,7 +22,6 @@ app.get("/api/users", (req, res) => {
   User.find()
     .exec()
     .then(users => {
-      console.log("->", users)
       res.json(users.map(user => user.apiRepr()))
     })
     .catch(err => {
@@ -47,19 +46,18 @@ app.get("/api/users/:id", (req, res) => {
 })
 
 app.get("/api/users/:id/:index", (req, res) => {
-  User.findById(req.params.id).exec().then(index => {
-    console.log(index)
-    console.log(req.params.index)
-    if (!index) {
-      return res.status(400).send()
-    }
-    return res.send(index.giftlist[req.params.index])
-    index.giftlist[req.params.index] = req.body.something
-    index.save(function(err) {
-      return res.send(index.giftlist[req.params.index])
-      // or it fails
+  User.findById(req.params.id)
+    .exec()
+    .then(index => {
+      if (!index) {
+        return res.status(400).send()
+      }
+      return res.send(index.giftlist[req.params.index]) 
     })
-  })
+    .catch(err => {
+      console.error(err)
+      return res.status(500).json({ error: "Internal server error" })
+    })
 })
 
 app.post("/api/users", (req, res) => {
@@ -136,22 +134,24 @@ app.patch("/api/users/:id/add", (req, res) => {
 })
 
 app.patch("/api/users/:id/:index", (req, res) => {
-  User.findById(req.params.id).exec().then(index => {
-    if (!index) {
-      return res.status(400).send()
-    }
-    index.giftlist[req.params.index] = req.body
-    User.update(
-      { _id: req.params.id },
-      { $set: { giftlist: index.giftlist } },
-      function(err) {
-        // index.save(function(err){
-        if (err) return res.status(500).send()
-        console.log(req.body)
-        console.log(res.body)
-        return res.send(index.giftlist[req.params.index])
+  User.findById(req.params.id)
+    .exec()
+    .then(index => {
+      if (!index) {
+        return res.status(400).send()
       }
-    )
+      index.giftlist[req.params.index] = req.body
+      User.update(
+        { _id: req.params.id },
+        { $set: { giftlist: index.giftlist } },
+        function(err) {
+          // index.save(function(err){
+          if (err) return res.status(500).send()
+          console.log(req.body)
+          console.log(res.body)
+          return res.send(index.giftlist[req.params.index])
+        }
+      )
   })
 })
 

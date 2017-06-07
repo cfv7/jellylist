@@ -122,7 +122,7 @@ export function updateGifts(userId, currentGiftIndex, gifts) {
         "PATCH",
         gifts
       )
-
+      
       dispatch(getUser(userId))
 
       return dispatch({ type: UPDATE_GIFTS_SUCCESS, data: res.data })
