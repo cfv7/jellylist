@@ -4,7 +4,10 @@ const userDataSchema = mongoose.Schema({
   user: String,
   email: String,
   birthday: String,
-  giftlist: Array
+  giftlist: Array,
+  googleId: {type: String, required: true},
+  accessToken: {type: String, required: true},
+  displayName: {type: String, required: true}
 });
 // this
 userDataSchema.methods.apiRepr = function() {
