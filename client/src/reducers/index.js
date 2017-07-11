@@ -1,54 +1,62 @@
-import * as actions from "../actions"
+import {GET_USER_INFO_SUCCESS} from "../actions"
 
 const initialState = {
   user: {},
   loading: false,
   error: null,
   currentGiftIndex: 0
+  // userInfo: {}
 }
 
 export const usersReducer = (state = initialState, action) => {
-  if (action.type === actions.FETCH_USER_REQUEST) {
-    return Object.assign({}, state, { loading: true })
-  } else if (action.type === actions.FETCH_USER_SUCCESS) {
-    return {
-      ...state,
-      user: action.user,
-      loading: false,
-      error: action.error
-    }
-  } else if (action.type === actions.FETCH_USER_ERROR) {
+  if (action.type === GET_USER_INFO_SUCCESS) {
+      console.log('SUCCESS');
     return Object.assign({}, state, {
-      loading: false,
-      error: action.error
+      userInfo: action.userInfo
     })
-  } else if (action.type === actions.PUT_USER_REQUEST) {
-    return Object.assign({}, state, {
-      loading: action.loading,
-      error: action.error
-    })
-  } else if (action.type === actions.PUT_USER_SUCCESS) {
-    console.log("PUT_USER_SUCCESS", action)
-    let updatedUser = Object.assign({}, state.user, {
-      giftlist: [...state.user.giftlist, action.newGift]
-    })
-    console.log(updatedUser)
-    return Object.assign({}, state, {
-      user: updatedUser
-    })
-  } else if (action.type === actions.SELECT_UPDATE_GIFT) {
-    let updatedGift = state.user.giftlist.map((gift, i) => i === action.index ? {...gift, editing: !gift.editing} : gift);
-    return {
-       ...state,
-       currentGiftIndex: action.index,
-       user: {
-         ...state.user,
-         giftlist: updatedGift
-       }
-    } 
-  } else if (action.type === actions.ASYNC_UPDATE_GIFT) {
-    console.log("reducer ->", action)
-    return state
-  }
+  }  
+  
+  // if (action.type === actions.FETCH_USER_REQUEST) {
+  //   return Object.assign({}, state, { loading: true })
+  // } else if (action.type === actions.FETCH_USER_SUCCESS) {
+  //   return {
+  //     ...state,
+  //     user: action.user,
+  //     loading: false,
+  //     error: action.error
+  //   }
+  // } else if (action.type === actions.FETCH_USER_ERROR) {
+  //   return Object.assign({}, state, {
+  //     loading: false,
+  //     error: action.error
+  //   })
+  // } else if (action.type === actions.PUT_USER_REQUEST) {
+  //   return Object.assign({}, state, {
+  //     loading: action.loading,
+  //     error: action.error
+  //   })
+  // } else if (action.type === actions.PUT_USER_SUCCESS) {
+  //   console.log("PUT_USER_SUCCESS", action)
+  //   let updatedUser = Object.assign({}, state.user, {
+  //     giftlist: [...state.user.giftlist, action.newGift]
+  //   })
+  //   console.log(updatedUser)
+  //   return Object.assign({}, state, {
+  //     user: updatedUser
+  //   })
+  // } else if (action.type === actions.SELECT_UPDATE_GIFT) {
+  //   let updatedGift = state.user.giftlist.map((gift, i) => i === action.index ? {...gift, editing: !gift.editing} : gift);
+  //   return {
+  //      ...state,
+  //      currentGiftIndex: action.index,
+  //      user: {
+  //        ...state.user,
+  //        giftlist: updatedGift
+  //      }
+  //   } 
+  // } else if (action.type === actions.ASYNC_UPDATE_GIFT) {
+  //   console.log("reducer ->", action)
+  //   return state
+  // }
   return state
 }

@@ -28,6 +28,10 @@ if (process.env.NODE_ENV != 'production') {
 
 app.use(passport.initialize());
 
+// app.get('/*', function(req, res) {
+//   res.send('Hello world!')
+// });
+
 passport.use(
   new GoogleStrategy({
     clientID: secret.CLIENT_ID,
@@ -104,18 +108,18 @@ app.get('/api/me',
   })
 );
 
-app.get('/api/questions',
-  passport.authenticate('bearer', { session: false }),
-  (req, res) => {
-    QuizItem
-      .find()
-      .exec()
-      .then(data => {
-        return res.json(data)
-      })
-      .catch(err => console.error(err))
-  }
-);
+// app.get('/api/questions',
+//   passport.authenticate('bearer', { session: false }),
+//   (req, res) => {
+//     QuizItem
+//       .find()
+//       .exec()
+//       .then(data => {
+//         return res.json(data)
+//       })
+//       .catch(err => console.error(err))
+//   }
+// );
 
 // Serve the built client
 app.use(express.static(path.resolve(__dirname, '../client/build')));
@@ -129,6 +133,7 @@ app.get(/^(?!\/api(\/|$))/, (req, res) => {
 
 let server;
 function runServer(databaseUrl = DATABASE_URL, port = PORT) {
+  console.log(databaseUrl)
   return new Promise((resolve, reject) => {
     mongoose.connect(databaseUrl, err => {
       if (err) {
@@ -161,7 +166,7 @@ function closeServer() {
 }
 
 if (require.main === module) {
-  runServer();
+  runServer().catch(err => console.error(err));
 }
 
 module.exports = {
@@ -169,18 +174,18 @@ module.exports = {
 };
 
 
-// // API endpoints go here!
-// app.get("/api/users", (req, res) => {
-//   User.find()
-//     .exec()
-//     .then(users => {
-//       res.json(users.map(user => user.apiRepr()))
-//     })
-//     .catch(err => {
-//       console.error(err)
-//       return res.status(500).json({ error: "Internal server error" })
-//     })
-// })
+// API endpoints go here!
+app.get("/api/users", (req, res) => {
+  User.find()
+    .exec()
+    .then(users => {
+      res.json(users.map(user => user.apiRepr()))
+    })
+    .catch(err => {
+      console.error(err)
+      return res.status(500).json({ error: "Internal server error" })
+    })
+})
 
 // app.get("/api/users/:id", (req, res) => {
 //   User.findById(req.params.id)

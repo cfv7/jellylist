@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 
 const userDataSchema = mongoose.Schema({
   user: String,
-  email: String,
   birthday: String,
   giftlist: Array,
   googleId: {type: String, required: true},
