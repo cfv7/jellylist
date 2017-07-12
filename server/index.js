@@ -1,5 +1,5 @@
 const { PORT, DATABASE_URL } = require("./config")
-const { User } = require("./models")
+const { User, GiftItem, GiftList } = require("./models")
 const path = require("path")
 const express = require("express")
 const mongoose = require("mongoose")
@@ -108,18 +108,58 @@ app.get('/api/me',
   })
 );
 
-// app.get('/api/questions',
-//   passport.authenticate('bearer', { session: false }),
-//   (req, res) => {
-//     QuizItem
-//       .find()
-//       .exec()
-//       .then(data => {
-//         return res.json(data)
-//       })
-//       .catch(err => console.error(err))
-//   }
-// );
+app.get("/api/:id", (req, res) => {
+  GiftList.findById(req.params.id)
+    .exec()
+    .then(giftlist => {
+      if(!giftlist) {
+        return res.status(400).send()
+      }
+      res.json(giftlist.apiRepr())
+      console.log('giftlist ->', giftlist)
+    })
+    .catch(err => {
+      console.error(err)
+      return res.status(500).json({error: "Internal server error"})
+    })
+})
+
+app.post('/api/addGiftList', (req, res) => {
+  let {title} = req.body
+  console.log('post giftlist ->', req.body)
+  GiftList
+    .create({
+      title: req.body.title
+    })
+    .then(giftlist => {
+      console.log(giftlist)
+      return res.status(201).json(giftlist)
+    })
+    .catch(err => {
+      console.error(err)
+      return res.status(500).json({message: 'internal server error'})
+    })
+
+})
+
+app.post('/api/:id/addGiftItem', (req, res) => {
+  let { name, url, note } = req.body
+  console.log('post giftlistitem ->', req.body)
+  GiftItem
+    .create({
+      name: req.body.name,
+      url: req.body.url,
+      note: req.body.note
+    })
+    .then(giftlistitem => {
+      console.log(giftlistitem)
+      res.status(201).json(giftlistitem)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).json({message: 'internal server error'})
+    })
+})
 
 // Serve the built client
 app.use(express.static(path.resolve(__dirname, '../client/build')));

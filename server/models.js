@@ -1,25 +1,54 @@
 const mongoose = require('mongoose');
 
 const userDataSchema = mongoose.Schema({
-  user: String,
-  birthday: String,
+  defaultList: String,
   giftlist: Array,
   googleId: {type: String, required: true},
   accessToken: {type: String, required: true},
   displayName: {type: String, required: true}
 });
-// this
+
+const giftItemSchema = mongoose.Schema({
+  _id: String,
+  name: String,
+  url: String,
+  note: {type: String, required: false}
+})
+
+const giftListSchema = mongoose.Schema({
+  title: String,
+  giftitems: Array
+})
+
 userDataSchema.methods.apiRepr = function() {
-  // console.log(this);
   return {
     id: this._id,
-    user: this.user,
-    email: this.email,
-    birthday: this.birthday,
-    giftlist: this.giftlist
+    displayName: this.displayName,
+    defaultList: this.defaultList,
+    giftlist: Array
   };
 }
 
-const User = mongoose.model('User', userDataSchema);
+giftListSchema.methods.apiRepr = function() {
+  return {
+    id: this._id,
+    title: this.title,
+    giftitems: this.giftitems
+  };
+}
 
-module.exports = {User}
+giftItemSchema.methods.apiRepr = function() {
+  return {
+    id: this._id,
+    name: this.name,
+    url: this.url,
+    note: this.note
+  };
+}
+
+
+const User = mongoose.model('User', userDataSchema);
+const GiftItem = mongoose.model('GiftItem', giftItemSchema);
+const GiftList = mongoose.model('GiftList', giftListSchema)
+
+module.exports = {User, GiftItem, GiftList}
