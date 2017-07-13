@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const userDataSchema = mongoose.Schema({
   defaultList: String,
-  giftlist: Array,
+  giftList: {type: Array, required: true},
   googleId: {type: String, required: true},
   accessToken: {type: String, required: true},
   displayName: {type: String, required: true}
@@ -25,7 +25,7 @@ userDataSchema.methods.apiRepr = function() {
     id: this._id,
     displayName: this.displayName,
     defaultList: this.defaultList,
-    giftlist: Array
+    giftList: this.giftList
   };
 }
 

@@ -5,6 +5,7 @@ import "./App.css"
 
 import GiftList from "./components/gift-list"
 import SignIn from "./components/sign-in"
+import UserPage from "./components/user-page"
 import { getUser } from "./actions"
 import { connect } from "react-redux"
 import {
@@ -51,7 +52,7 @@ class App extends Component {
 
   render() {
     if(this.state.currentUser){
-      return <GiftList />   
+      return <UserPage />   
     }
     return  <SignIn />  
     // each user only has one gift list

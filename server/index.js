@@ -139,7 +139,6 @@ app.post('/api/addGiftList', (req, res) => {
       console.error(err)
       return res.status(500).json({message: 'internal server error'})
     })
-
 })
 
 app.post('/api/:id/addGiftItem', (req, res) => {

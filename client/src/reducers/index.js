@@ -1,20 +1,29 @@
-import {GET_USER_INFO_SUCCESS} from "../actions"
+import {GET_USER_INFO_SUCCESS, GET_USER_INFO_ERROR} from "../actions"
 
 const initialState = {
   user: {},
   loading: false,
   error: null,
-  currentGiftIndex: 0
+  // currentGiftIndex: 0
   // userInfo: {}
+  // allGiftLists: [id, id, id]
+  // currentGiftList: [id]
+  // currentGiftItems: [id, id, id]
 }
 
 export const usersReducer = (state = initialState, action) => {
   if (action.type === GET_USER_INFO_SUCCESS) {
-      console.log('SUCCESS');
+    console.log('SUCCESS');
     return Object.assign({}, state, {
       userInfo: action.userInfo
     })
   }  
+  if(action.type === GET_USER_INFO_ERROR) {
+    console.log('USER ERROR');
+    return Object.assign({}, state, {
+      error: action.error
+    })
+  }
   
   // if (action.type === actions.FETCH_USER_REQUEST) {
   //   return Object.assign({}, state, { loading: true })
