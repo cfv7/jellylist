@@ -43,13 +43,9 @@ export class GiftList extends React.Component {
         {/*REMOVE GIFT*/}
         {/*date added to bottom of card*/}
         <div className="gift-container"> 
-          Gift 1 <br />
-          url <br />
-          note 
+          <h2>{this.props.giftList}</h2>
         </div>
-        <div className="gift-container"> 
-          <h1> Gift 2  </h1>
-        </div>
+
         {/*<Gift />*/}
       </div>
     )
@@ -60,11 +56,14 @@ export class GiftList extends React.Component {
 const mapStateToProps = function(state, prop) {
   console.log(state.userInfo)
   let displayName = ""
+  let giftList = [];
   if(state.userInfo){
     displayName = state.userInfo.displayName
+    giftList = state.userInfo.giftList
   }
   return {
     displayName,
+    giftList,
     user: state.user, 
     loading: state.loading 
   }
