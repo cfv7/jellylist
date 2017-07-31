@@ -45,13 +45,17 @@ export class GiftList extends React.Component {
         <div className="gift-container"> 
           <h2>{this.props.giftList}</h2>
         </div>
-
+        <form>
+          <input type="text" name="name"></input>
+          <input type="text" name="url"></input>
+          <input type="text" name="note"></input>
+          <a href="/api/:id/addGiftItem">Add Gift</a>
+        </form>
         {/*<Gift />*/}
       </div>
     )
   }
 }
-
 // const mapStateToProps = state => ({gifts: state.giftlist});
 const mapStateToProps = function(state, prop) {
   console.log(state.userInfo)
