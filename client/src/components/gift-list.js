@@ -3,10 +3,12 @@ import { connect } from "react-redux"
 import { getUserInfo } from "../actions"
 import '../App.css'
 import '../index.css'
+import './gift-list.css'
 import logo from "../logo.svg"
 // import AddGift from "./add-gift"
 // import EditGift from "./edit-gift"
-// import Gift from "./gift"
+import Gift from "./gift"
+
 
 export class GiftList extends React.Component {
   componentDidMount() {
@@ -35,10 +37,20 @@ export class GiftList extends React.Component {
     //   )
     // }
     return (
-      <div className="container">
+      <div className="giftlist-container">
         {/*ADD GIFT*/}
         {/*EDIT GIFT*/}
         {/*REMOVE GIFT*/}
+        {/*date added to bottom of card*/}
+        <div className="gift-container"> 
+          Gift 1 <br />
+          url <br />
+          note 
+        </div>
+        <div className="gift-container"> 
+          <h1> Gift 2  </h1>
+        </div>
+        {/*<Gift />*/}
       </div>
     )
   }

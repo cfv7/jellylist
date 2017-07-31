@@ -1,13 +1,5 @@
 const mongoose = require('mongoose');
 
-const userDataSchema = mongoose.Schema({
-  defaultList: String,
-  giftList: {type: Array, required: true},
-  googleId: {type: String, required: true},
-  accessToken: {type: String, required: true},
-  displayName: {type: String, required: true}
-});
-
 const giftItemSchema = mongoose.Schema({
   _id: String,
   name: String,
@@ -17,15 +9,27 @@ const giftItemSchema = mongoose.Schema({
 
 const giftListSchema = mongoose.Schema({
   title: String,
-  giftitems: Array
+  giftitems: [giftItemSchema],
+  _creator: {type: mongoose.Schema.Types.ObjectId, ref: "User"}
 })
+
+const userDataSchema = mongoose.Schema({
+  defaultList: String,
+  giftList: [giftListSchema],
+  // giftList: [{type: mongoose.Schema.Types.ObjectId, ref: "GiftList"}],
+  googleId: {type: String, required: true},
+  accessToken: {type: String, required: true},
+  displayName: {type: String, required: true},
+  logInCount: 0
+});
 
 userDataSchema.methods.apiRepr = function() {
   return {
     id: this._id,
     displayName: this.displayName,
     defaultList: this.defaultList,
-    giftList: this.giftList
+    giftList: this.giftList,
+    logCount: this.logInCount
   };
 }
 
@@ -48,6 +52,14 @@ giftItemSchema.methods.apiRepr = function() {
 
 
 const User = mongoose.model('User', userDataSchema);
+
+// var user = new User({
+//   defaultList: 'hello',
+//   giftList: [{type: mongoose.Schema.Types.ObjectId, ref: "GiftList"}],
+// })
+// console.log('user ->', user)
+// user.save()
+
 const GiftItem = mongoose.model('GiftItem', giftItemSchema);
 const GiftList = mongoose.model('GiftList', giftListSchema)
 

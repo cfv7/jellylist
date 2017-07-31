@@ -1,7 +1,7 @@
 import {GET_USER_INFO_SUCCESS, GET_USER_INFO_ERROR} from "../actions"
 
 const initialState = {
-  user: {},
+  userInfo: {},
   loading: false,
   error: null,
   // currentGiftIndex: 0

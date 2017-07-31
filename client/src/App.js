@@ -55,12 +55,6 @@ class App extends Component {
       return <UserPage />   
     }
     return  <SignIn />  
-    // each user only has one gift list
-    // <Router>  
-          {/*<Route exact path="/" component={SignIn} />*/}
-          {/*<Route exact path="/:userId" component={GiftList} />*/}
-      // </Router>
-
   }
 }
 

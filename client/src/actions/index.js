@@ -23,9 +23,10 @@ import * as Cookies from 'js-cookie';
 // })
 
 export const GET_USER_INFO_SUCCESS = 'GET_USER_INFO_SUCCESS';
-export const getUserInfoSuccess = (userInfo) => ({
+export const getUserInfoSuccess = (userInfo, addCount) => ({
   type: GET_USER_INFO_SUCCESS,
-  userInfo
+  userInfo,
+  addCount
 })
 
 export const GET_USER_INFO_ERROR = 'GET_USER_INFO_ERROR';

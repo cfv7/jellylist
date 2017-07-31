@@ -18,14 +18,15 @@ class Gift extends Component {
   render() {
     return (
       <div>
-        {" "}
+        {/*{" "}
         {this.props.gift.name}
         {" "}
         {this.state.showEdit && <EditGift index />}
         {" "}
         <span className="editBtn" onClick={this.toggle.bind(this)}>
           {" "}Edit{" "}
-        </span>
+        </span>*/}
+        GIFT
       </div>
     )
   }

@@ -24,6 +24,18 @@ export class UserPage extends React.Component {
       <div className="App-header">
         <img src={logo} className="App-logo App-floating" alt="logo" />
         <h1 className="header-title">Jellylist</h1>
+        <a 
+          className="logout-btn"
+          href="/api/auth/logout"
+        >
+        <i 
+          className="fa fa-sign-out" 
+          aria-hidden="true" 
+          title="logout" 
+          alt="logout button"
+        >
+        </i>logout
+        </a>  
       </div>
       <div className="container">
         <h2 className="user-title">{this.props.displayName}</h2>

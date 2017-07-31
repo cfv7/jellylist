@@ -32,6 +32,13 @@ app.use(passport.initialize());
 //   res.send('Hello world!')
 // });
 
+// var user = new User({
+//   defaultList: 'hello',
+//   giftList: [{type: mongoose.Schema.Types.ObjectId, ref: "GiftList"}],
+// })
+// console.log('user ->', user)
+// user.save()
+
 passport.use(
   new GoogleStrategy({
     clientID: secret.CLIENT_ID,
@@ -42,17 +49,20 @@ passport.use(
       User
         .findOneAndUpdate({
           googleId: profile.id, 
-          displayName: profile.displayName
+          displayName: profile.displayName,
+          logInCount: profile.logInCount
         }, { 
           $set: {
             accessToken: accessToken, 
-            googleId: profile.id
+            googleId: profile.id,
+            giftList: [{type: mongoose.Schema.Types.ObjectId, ref: "GiftList"}]
           }
         }, {
           upsert: true, 
           new:true
         })
         .then((user) => {
+          console.log('user ->',User)
           return cb(null, user);
         })
         .catch((err) => {
@@ -70,6 +80,7 @@ passport.use(
         })
         .then((user) => {
           if(user){
+            user.logInCount++;
             return done(null, user);
           }
         })
@@ -104,7 +115,8 @@ app.get('/api/me',
   passport.authenticate('bearer', { session: false }),
   (req, res) => res.json({
     googleId: req.user.googleId,
-    displayName: req.user.displayName
+    displayName: req.user.displayName,
+    giftList: req.user.giftList
   })
 );
 
@@ -129,7 +141,8 @@ app.post('/api/addGiftList', (req, res) => {
   console.log('post giftlist ->', req.body)
   GiftList
     .create({
-      title: req.body.title
+      title: req.body.title,
+      _creator: req.body._creator
     })
     .then(giftlist => {
       console.log(giftlist)

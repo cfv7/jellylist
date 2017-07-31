@@ -1,0 +1,16 @@
+.giftlist-container {
+  border-right: 1px solid black;
+  border-left: 1px solid black;
+  width: 75%;
+  margin: auto;
+}
+
+.gift-container {
+  border: 1px solid black;
+  /*width: 50%;*/
+  margin: auto;
+  margin-top: 20px;
+  border-radius: 10px;
+  height: 80px;
+  background: lavender;
+}
