@@ -54,8 +54,8 @@ passport.use(
         }, { 
           $set: {
             accessToken: accessToken, 
-            googleId: profile.id,
-            giftList: [{type: mongoose.Schema.Types.ObjectId, ref: "GiftList"}]
+            googleId: profile.id
+            // giftList: []
           }
         }, {
           upsert: true, 
@@ -119,6 +119,15 @@ app.get('/api/me',
     giftList: req.user.giftList
   })
 );
+app.get('/api/user/:id', (req, res) => {
+  User.findOne({_id: req.params.id})
+    .populate('giftList', {populate: 'giftitems'})
+    // .populate('giftList.giftitems')
+    .then(data => {
+      res.send(data)
+    })
+}
+);
 
 app.get("/api/:id", (req, res) => {
   GiftList.findById(req.params.id)
@@ -135,8 +144,18 @@ app.get("/api/:id", (req, res) => {
       return res.status(500).json({error: "Internal server error"})
     })
 })
+  
+app.post('/api/list/:listId/item/:itemId', (req, res) => {
+    GiftList
+    .findOne({_id: req.params.listId})
+    .then(giftlist => {
+      giftlist.giftitems.push(req.params.itemId)
+      giftlist.save()
+      res.send(giftlist)
+    })
+})
 
-app.post('/api/addGiftList', (req, res) => {
+app.post('/api/user/:id/list/:listId', (req, res) => {
   let {title} = req.body
   console.log('post giftlist ->', req.body)
   GiftList
@@ -154,7 +173,7 @@ app.post('/api/addGiftList', (req, res) => {
     })
 })
 
-app.post('/api/:id/addGiftItem', (req, res) => {
+app.post('/api/item/', (req, res) => {
   let { name, url, note } = req.body
   console.log('post giftlistitem ->', req.body)
   GiftItem
