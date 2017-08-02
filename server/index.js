@@ -1,5 +1,5 @@
 const { PORT, DATABASE_URL } = require("./config")
-const { User, GiftItem, GiftList } = require("./models")
+const { User, List, Item } = require("./models")
 const path = require("path")
 const express = require("express")
 const mongoose = require("mongoose")
@@ -28,17 +28,6 @@ if (process.env.NODE_ENV != 'production') {
 
 app.use(passport.initialize());
 
-// app.get('/*', function(req, res) {
-//   res.send('Hello world!')
-// });
-
-// var user = new User({
-//   defaultList: 'hello',
-//   giftList: [{type: mongoose.Schema.Types.ObjectId, ref: "GiftList"}],
-// })
-// console.log('user ->', user)
-// user.save()
-
 passport.use(
   new GoogleStrategy({
     clientID: secret.CLIENT_ID,
@@ -49,13 +38,11 @@ passport.use(
       User
         .findOneAndUpdate({
           googleId: profile.id, 
-          displayName: profile.displayName,
-          logInCount: profile.logInCount
+          displayName: profile.displayName
         }, { 
           $set: {
             accessToken: accessToken, 
-            googleId: profile.id,
-            giftList: [{type: mongoose.Schema.Types.ObjectId, ref: "GiftList"}]
+            googleId: profile.id
           }
         }, {
           upsert: true, 
@@ -80,7 +67,6 @@ passport.use(
         })
         .then((user) => {
           if(user){
-            user.logInCount++;
             return done(null, user);
           }
         })
@@ -116,60 +102,119 @@ app.get('/api/me',
   (req, res) => res.json({
     googleId: req.user.googleId,
     displayName: req.user.displayName,
-    giftList: req.user.giftList
+    list: req.user.list
   })
 );
 
-app.get("/api/:id", (req, res) => {
-  GiftList.findById(req.params.id)
-    .exec()
-    .then(giftlist => {
-      if(!giftlist) {
-        return res.status(400).send()
-      }
-      res.json(giftlist.apiRepr())
-      console.log('giftlist ->', giftlist)
+// get user
+app.get('/api/user/:id', (req, res) => {
+  User.findOne({_id: req.params.id})
+    .populate('list', {populate: 'items'})
+    // .populate('giftList.giftitems')
+    .then(data => {
+      res.send(data)
     })
-    .catch(err => {
-      console.error(err)
-      return res.status(500).json({error: "Internal server error"})
-    })
-})
+});
 
-app.post('/api/addGiftList', (req, res) => {
-  let {title} = req.body
-  console.log('post giftlist ->', req.body)
-  GiftList
+// post list
+app.post('/api/list', (req, res) => {
+  let { title } = req.body
+  console.log('post list ->', req.body)
+  List
     .create({
-      title: req.body.title,
-      _creator: req.body._creator
+      title: req.body.title
     })
-    .then(giftlist => {
-      console.log(giftlist)
-      return res.status(201).json(giftlist)
+    .then(list => {
+      console.log(list)
+      res.status(201).json(list)
     })
     .catch(err => {
       console.error(err)
-      return res.status(500).json({message: 'internal server error'})
+      res.status(500).json({message: 'internal server error'})
     })
+}) 
+
+// get item
+app.get('/api/item/:id/', (req, res) => {
+  Item.findOne({_id: req.params.id})
+  .populate('item')
+  .then(data => {
+    res.send(data)
+  })
 })
 
-app.post('/api/:id/addGiftItem', (req, res) => {
+// post item
+app.post('/api/item/', (req, res) => {
   let { name, url, note } = req.body
-  console.log('post giftlistitem ->', req.body)
-  GiftItem
+  console.log('post item ->', req.body)
+  Item
     .create({
       name: req.body.name,
       url: req.body.url,
       note: req.body.note
     })
-    .then(giftlistitem => {
-      console.log(giftlistitem)
-      res.status(201).json(giftlistitem)
+    .then(item => {
+      console.log(item)
+      res.status(201).json(item)
     })
     .catch(err => {
       console.error(err)
       res.status(500).json({message: 'internal server error'})
+    })
+}) 
+
+// delete item from list
+app.delete('/api/list/:listId/item/:itemId', (req, res) => {
+  List.findByIdAndRemove(req.params.itemId)
+    .exec()
+    .then(item => {
+      console.log('delete ->', item)
+      res.status(204).json({ message: "delete item success" })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({error: "internal server error"})
+    })
+})
+
+// delete item from items
+app.delete('/api/item/:id', (req, res) => {
+  Item.findByIdAndRemove(req.params.id)
+    .exec()
+    .then(item => {
+      console.log('delete ->', item)
+      res.status(204).json({ message: "delete item success" })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ error: "internal server error" })
+    })
+})
+
+// connect item to list
+app.post('/api/list/:listId/item/:itemId', (req, res) => {
+    List
+    .findOne({_id: req.params.listId})
+    .then(list => {
+      list.items.push(req.params.itemId)
+      list.save()
+      res.send(list)
+    })
+})
+
+// connect list to user
+app.post('/api/user/:id/list/:listId', (req, res) => {
+  let {title} = req.body
+  console.log('post list ->', req.body)
+  User
+    .findOne({_id: req.params.id})
+    .then(user => {
+      user.list.push(req.params.listId)
+      return res.status(201).json(user)
+    })
+    .catch(err => {
+      console.error(err)
+      return res.status(500).json({message: 'internal server error'})
     })
 })
 

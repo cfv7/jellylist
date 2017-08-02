@@ -1,47 +1,41 @@
 const mongoose = require('mongoose');
 
-const giftItemSchema = mongoose.Schema({
-  _id: String,
+const itemSchema = mongoose.Schema({
   name: String,
   url: String,
   note: {type: String, required: false}
 })
 
-const giftListSchema = mongoose.Schema({
+const listSchema = mongoose.Schema({
   title: String,
-  giftitems: [giftItemSchema],
+  items: [{type: mongoose.Schema.Types.ObjectId, ref: "Item", default: []}],
   _creator: {type: mongoose.Schema.Types.ObjectId, ref: "User"}
 })
 
-const userDataSchema = mongoose.Schema({
-  defaultList: String,
-  giftList: [giftListSchema],
-  // giftList: [{type: mongoose.Schema.Types.ObjectId, ref: "GiftList"}],
+const userSchema = mongoose.Schema({
+  list: [{type: mongoose.Schema.Types.ObjectId, ref: "List", default: []}],
   googleId: {type: String, required: true},
   accessToken: {type: String, required: true},
-  displayName: {type: String, required: true},
-  logInCount: 0
+  displayName: {type: String, required: true}
 });
 
-userDataSchema.methods.apiRepr = function() {
+userSchema.methods.apiRepr = function() {
   return {
     id: this._id,
     displayName: this.displayName,
-    defaultList: this.defaultList,
-    giftList: this.giftList,
-    logCount: this.logInCount
+    list: this.list
   };
 }
 
-giftListSchema.methods.apiRepr = function() {
+listSchema.methods.apiRepr = function() {
   return {
     id: this._id,
     title: this.title,
-    giftitems: this.giftitems
+    items: this.items
   };
 }
 
-giftItemSchema.methods.apiRepr = function() {
+itemSchema.methods.apiRepr = function() {
   return {
     id: this._id,
     name: this.name,
@@ -51,16 +45,8 @@ giftItemSchema.methods.apiRepr = function() {
 }
 
 
-const User = mongoose.model('User', userDataSchema);
+const User = mongoose.model('User', userSchema);
+const List = mongoose.model('List', listSchema);
+const Item = mongoose.model('Item', itemSchema);
 
-// var user = new User({
-//   defaultList: 'hello',
-//   giftList: [{type: mongoose.Schema.Types.ObjectId, ref: "GiftList"}],
-// })
-// console.log('user ->', user)
-// user.save()
-
-const GiftItem = mongoose.model('GiftItem', giftItemSchema);
-const GiftList = mongoose.model('GiftList', giftListSchema)
-
-module.exports = {User, GiftItem, GiftList}
+module.exports = {User, List, Item}
