@@ -130,7 +130,23 @@ app.get('/api/user/:id', (req, res) => {
 //       return res.status(500).json({error: "Internal server error"})
 //     })
 // })
+app.post('/api/list', (req, res) => {
+  let { title } = req.body
+  console.log('post list ->', req.body)
+  List
+  .create({
+      title: req.body.title
+    })
+    .then(list => {
+      console.log(list)
+      res.status(201).json(list)
+    })
+    .catch(err => {
+      console.error(err)
+      res.status(500).json({message: 'internal server error'})
+    })
   
+})  
 app.post('/api/list/:listId/item/:itemId', (req, res) => {
     List
     .findOne({_id: req.params.listId})
