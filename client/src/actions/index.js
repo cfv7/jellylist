@@ -124,6 +124,10 @@ function fetchApi(path, method, body) {
   })
 }
 
+
+
+
+
 // export const addGift = (userId, newGift) => (dispatch, getState) => {
 //   dispatch(putUserRequest())
 //   let giftId = Math.round(Math.random() * 1000000)

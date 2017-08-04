@@ -116,6 +116,15 @@ app.get('/api/user/:id', (req, res) => {
     })
 });
 
+// get list
+app.get('/api/list/:id', (req, res) => {
+  List.findOne({_id: req.params.id})
+    .populate('list', {populate: 'items'})
+    .then(data => {
+      res.send(data)
+    })
+});
+
 // post list
 app.post('/api/list', (req, res) => {
   let { title } = req.body
@@ -209,7 +218,11 @@ app.post('/api/user/:id/list/:listId', (req, res) => {
   User
     .findOne({_id: req.params.id})
     .then(user => {
+      if(!user.list){
+        user.list = []
+      }
       user.list.push(req.params.listId)
+      user.save()
       return res.status(201).json(user)
     })
     .catch(err => {
