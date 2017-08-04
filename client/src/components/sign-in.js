@@ -1,30 +1,24 @@
 import React from 'react'
-import {connect} from 'react-redux'
+import { connect } from 'react-redux'
+import './sign-in.css';
+import logo from "../logo.svg"
 
 
-export class SignIn extends React.Component {
-    constructor(props) {
-        super(props);
-        this.onChange = this.onChange.bind(this);
-        this.onSubmit = this.onSubmit.bind(this);
-    }
 
+export default function SignIn() {
+    return (
+        <div className="App">
+          <div className="App-header">
+            <img src={logo} className="App-logo App-floating" alt="logo" />
+            <h1 className="header-title">Jellylist</h1>
+          </div>
 
-    render(){
-
-        return(
-            <div>
-            <h2>SIGN IN</h2> 
-            <form onSubmit={this.onSubmit}>
-
-                <input onChange={this.onChange} ref="email" type="text" name="email" id="inputemail" placeholder="email" />
-
-                <input onChange={this.onChange} ref="password" type="text" name="password" id="inputpassword" placeholder="password" />
-                <input type="submit" id="editGiftBtn" className="button" name="update" value="Update" />
-            </form>
-            </div>
-        )        
-
-
-    }
+        <h2>SIGN IN</h2>
+        <aricle>  
+        <div className="button-container">
+          <a className="login-button" href={'/api/auth/google'}>Google Login</a>
+        </div> 
+        </aricle>
+    </div>           
+    )        
 }

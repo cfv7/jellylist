@@ -1,0 +1,47 @@
+
+/* ==========================	
+  BUTTON
+=========================== */	
+
+.button-container {
+    width: 50%;
+    height: 50px;
+    margin: 0 auto;
+    margin-top: 90px;
+    text-align: center;
+}
+
+.login-button {
+    background-color: #BD1E1E;
+    color: ghostwhite;
+    font-size: 18px;
+    line-height: 50px;
+    font-weight: bold;
+    width: 100%;
+    margin: 0 auto;
+    border-radius: 5px;
+    font-family: 'Rokkitt';
+    transition: all 0.3s ease 0s;
+    text-decoration: none;
+    padding: 20px 40px;
+    text-align: center;
+}
+.login-button:hover {
+    background-color: #99CCFF;
+    color: #2e4057;
+}
+
+/* ==========================	
+  MEDIA QUERIES
+=========================== */	
+
+@media only screen and (min-width: 0px) and (max-width: 768px) {
+  .login-title h1{
+    font-size: 4em;
+  } 
+  .intro p {
+    font-size: 1.5em;
+    margin-left: 2em;
+    margin-right: 2em;
+  }
+}
