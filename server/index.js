@@ -106,6 +106,7 @@ app.get('/api/me',
   })
 );
 
+// get user
 app.get('/api/user/:id', (req, res) => {
   User.findOne({_id: req.params.id})
     .populate('list', {populate: 'items'})
@@ -115,26 +116,21 @@ app.get('/api/user/:id', (req, res) => {
     })
 });
 
-// app.get("/api/:id", (req, res) => {
-//   List.findById(req.params.id)
-//     .exec()
-//     .then(list => {
-//       if(!list) {
-//         return res.status(400).send()
-//       }
-//       res.json(list.apiRepr())
-//       console.log('list ->', list)
-//     })
-//     .catch(err => {
-//       console.error(err)
-//       return res.status(500).json({error: "Internal server error"})
-//     })
-// })
+// get list
+app.get('/api/list/:id', (req, res) => {
+  List.findOne({_id: req.params.id})
+    .populate('list', {populate: 'items'})
+    .then(data => {
+      res.send(data)
+    })
+});
+
+// post list
 app.post('/api/list', (req, res) => {
   let { title } = req.body
   console.log('post list ->', req.body)
   List
-  .create({
+    .create({
       title: req.body.title
     })
     .then(list => {
@@ -145,36 +141,18 @@ app.post('/api/list', (req, res) => {
       console.error(err)
       res.status(500).json({message: 'internal server error'})
     })
-  
-})  
-app.post('/api/list/:listId/item/:itemId', (req, res) => {
-    List
-    .findOne({_id: req.params.listId})
-    .then(list => {
-      list.items.push(req.params.itemId)
-      list.save()
-      res.send(list)
-    })
+}) 
+
+// get item
+app.get('/api/item/:id/', (req, res) => {
+  Item.findOne({_id: req.params.id})
+  .populate('item')
+  .then(data => {
+    res.send(data)
+  })
 })
 
-app.post('/api/user/:id/list/:listId', (req, res) => {
-  let {title} = req.body
-  console.log('post list ->', req.body)
-  List
-    .create({
-      title: req.body.title,
-      _creator: req.body._creator
-    })
-    .then(list => {
-      console.log(list)
-      return res.status(201).json(list)
-    })
-    .catch(err => {
-      console.error(err)
-      return res.status(500).json({message: 'internal server error'})
-    })
-})
-
+// post item
 app.post('/api/item/', (req, res) => {
   let { name, url, note } = req.body
   console.log('post item ->', req.body)
@@ -191,6 +169,65 @@ app.post('/api/item/', (req, res) => {
     .catch(err => {
       console.error(err)
       res.status(500).json({message: 'internal server error'})
+    })
+}) 
+
+// delete item from list
+app.delete('/api/list/:listId/item/:itemId', (req, res) => {
+  List.findByIdAndRemove(req.params.itemId)
+    .exec()
+    .then(item => {
+      console.log('delete ->', item)
+      res.status(204).json({ message: "delete item success" })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({error: "internal server error"})
+    })
+})
+
+// delete item from items
+app.delete('/api/item/:id', (req, res) => {
+  Item.findByIdAndRemove(req.params.id)
+    .exec()
+    .then(item => {
+      console.log('delete ->', item)
+      res.status(204).json({ message: "delete item success" })
+    })
+    .catch(err => {
+      console.log(err)
+      res.status(500).json({ error: "internal server error" })
+    })
+})
+
+// connect item to list
+app.post('/api/list/:listId/item/:itemId', (req, res) => {
+    List
+    .findOne({_id: req.params.listId})
+    .then(list => {
+      list.items.push(req.params.itemId)
+      list.save()
+      res.send(list)
+    })
+})
+
+// connect list to user
+app.post('/api/user/:id/list/:listId', (req, res) => {
+  let {title} = req.body
+  console.log('post list ->', req.body)
+  User
+    .findOne({_id: req.params.id})
+    .then(user => {
+      if(!user.list){
+        user.list = []
+      }
+      user.list.push(req.params.listId)
+      user.save()
+      return res.status(201).json(user)
+    })
+    .catch(err => {
+      console.error(err)
+      return res.status(500).json({message: 'internal server error'})
     })
 })
 

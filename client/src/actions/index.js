@@ -1,27 +1,5 @@
 import * as Cookies from 'js-cookie';
 
-
-// export const FETCH_USER_REQUEST = "FETCH_USER_REQUEST"
-// export const fetchUserRequest = () => ({
-//   type: FETCH_USER_REQUEST,
-//   loading: true
-// })
-
-// export const FETCH_USER_SUCCESS = "FETCH_USER_SUCCESS"
-// export const fetchUserSuccess = user => ({
-//   type: FETCH_USER_SUCCESS,
-//   loading: false,
-//   error: null,
-//   user
-// })
-
-// export const FETCH_USER_ERROR = "FETCH_USER_ERROR"
-// export const fetchUserError = err => ({
-//   type: FETCH_USER_ERROR,
-//   loading: false,
-//   error: err
-// })
-
 export const GET_USER_INFO_SUCCESS = 'GET_USER_INFO_SUCCESS';
 export const getUserInfoSuccess = (userInfo, addCount) => ({
   type: GET_USER_INFO_SUCCESS,
@@ -83,21 +61,6 @@ export const asyncUpdateGift = (name, price_range, link, note) => ({
   note
 })
 
-// export const getUser = userId => dispatch => {
-//   dispatch(fetchUserRequest())
-//   return fetch(`/api/users/${userId}`)
-//     .then(user => {
-//       return user.json()
-//     })
-//     .then(data => {
-//       dispatch(fetchUserSuccess(data))
-//     })
-//     .catch(err => {
-//       console.error("FETCH_USER_ERROR", err)
-//       dispatch(fetchUserError(err))
-//     })
-// }
-
 export const getUserInfo = () => dispatch => {
   const accessToken = Cookies.get('accessToken');
   fetch('/api/me', {
@@ -156,45 +119,6 @@ export function postList(data, dispatch) {
   })
 }
 
-// export const addGift = (userId, newGift) => (dispatch, getState) => {
-//   dispatch(putUserRequest())
-//   let giftId = Math.round(Math.random() * 1000000)
-//   return fetchApi(`users/${userId}/add`, "PATCH", {
-//     name: newGift,
-//     giftId: giftId,
-//     purchased: false,
-//   })
-//     .then(() => {
-//       dispatch(putUserSuccess({ name: newGift, giftId, purchased: false }))
-//     })
-//     .catch(err => {
-//       console.error(err)
-//       dispatch(putUserError(err))
-//     })
-// }
-
 export const UPDATE_GIFTS = "UPDATE_GIFTS"
 export const UPDATE_GIFTS_SUCCESS = "UPDATE_GIFTS_SUCCESS"
 export const UPDATE_GIFTS_ERROR = "UPDATE_GIFTS_ERROR"
-
-// export function updateGifts(userId, currentGiftIndex, gifts) {
-//   return async dispatch => {
-//     dispatch({ type: UPDATE_GIFT })
-
-//     try {
-//       console.log(gifts)
-//       console.log(userId)
-//       const res = await fetchApi(
-//         `users/${userId}/${currentGiftIndex}`,
-//         "PATCH",
-//         gifts
-//       )
-      
-//       dispatch(getUserInfo(userInfo))
-
-//       return dispatch({ type: UPDATE_GIFTS_SUCCESS, data: res.data })
-//     } catch (e) {
-//       return dispatch({ type: UPDATE_GIFTS_ERROR, e })
-//     }
-//   }
-// }
