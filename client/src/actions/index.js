@@ -35,7 +35,11 @@ export const getuserInfoError = (err) => ({
   err
 })
 
-
+export const POST_LIST_SUCCESS = 'POST_LIST_SUCCESS';
+export const postListSuccess = (data) => ({
+  type: POST_LIST_SUCCESS,
+  data
+})
 
 export const PUT_USER_REQUEST = "PUT_USER_REQUEST"
 export const putUserRequest = () => ({
@@ -121,6 +125,34 @@ function fetchApi(path, method, body) {
       Accept: "application/json",
       "Content-Type": "application/json"
     }
+  })
+}
+
+export function addList(user, _list) {
+  var list=_list
+  if(!user) {return}
+  if(!list) {
+    fetch.post('/api/list', {
+      title: "My List"
+    }).then((data) => {
+      return {
+        list:data._id,
+        user:user
+      }
+    }).then(postList) 
+  } else {
+      postList({
+        list:list,
+        user:user
+      })
+  }
+}
+
+export function postList(data, dispatch) {
+  fetch.post('/api/user/'+data.user+'/list/'+data.list,{
+  }).then(data => {
+    console.log(data);
+    dispatch(postListSuccess(data));
   })
 }
 

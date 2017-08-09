@@ -1,6 +1,6 @@
 import React from "react"
 import { connect } from "react-redux"
-import { getUserInfo } from "../actions"
+import { getUserInfo, addList } from "../actions"
 import '../App.css'
 import '../index.css'
 import './gift-list.css'
@@ -14,6 +14,7 @@ export class GiftList extends React.Component {
   componentDidMount() {
     // const userInfo = this.props.match.params.userInfo
     this.props.dispatch(getUserInfo())
+    this.props.dispatch(addList(state.user))
     // console.log(userInfo)
   }
   // onClick(index) {
